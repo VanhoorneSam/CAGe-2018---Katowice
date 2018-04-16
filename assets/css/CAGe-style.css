@@ -1,0 +1,195 @@
+@font-face {
+    font-family: 'myFont';
+    src: url("../fonts/DK Lemon Yellow Sun.otf");
+}
+
+body {
+    font-family: 'myFont';
+    color: whitesmoke;
+    background-color: #262626;
+    font-size: X-large;
+}
+
+header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #1B1B1B;
+    width: 100%;
+    height: 10vh;
+}
+
+.nickname-panel {
+    margin-top: 40vh;
+}
+
+#nickname {
+    width: 80%;
+    font-size: xx-large;
+    padding: 30px;
+    border: 1px #FF9100 solid;
+    background: none;
+    color: whitesmoke;
+}
+
+#nickname:focus {}
+
+.player-name {
+    font-size: 6vh;
+    margin: 0;
+    width: 40%;
+    position: absolute;
+    top: 2vh;
+    left: 5%;
+}
+
+#time {
+    position: absolute;
+    top: -2vh;
+    right: 5vw;
+    font-size: 5vh;
+}
+
+#time-icon {
+    position: absolute;
+    top: 3vh;
+    right: 15vw;
+    width: auto;
+    height: 5vh;
+}
+
+fieldset {
+    width: 85%;
+    height: 60vh;
+    margin: 0 auto 0;
+    border: none;
+}
+
+.question-title {
+    margin: 12vh auto 0 auto;
+    font-size: xx-large;
+    width: 50vw;
+    border-bottom: 1px whitesmoke solid;
+}
+
+#question {
+    font-size: XX-large;
+    width: 90%;
+    height: 11vh;
+    margin: auto;
+    color: #FF9100;
+    word-wrap: break-word;
+    padding-top: 10px;
+}
+
+.container {
+    text-align: center;
+}
+
+.answer {
+    color: whitesmoke;
+    border: 1px solid #FF9100;
+    display: table;
+    width: 90%;
+    height: 14vh;
+    margin: 15px 0 15px 0;
+    font-size: large;
+    border-radius: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    text-decoration: none;
+}
+
+.selectedAnswer {
+    background-color: #FF9100;
+    color: #262626;
+}
+
+.answer span {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+#success,
+#failure {
+    height: 90vh;
+    margin-top: 10vh;
+}
+
+.info-image {
+    width: auto;
+    height: 30vh;
+}
+
+.info-text {
+    color: #FF9100;
+}
+
+.info-learn {
+    margin-bottom: 5vh;
+}
+
+.info-next,
+.info-learn,
+.again {
+    margin-top: 5vh;
+    display: block;
+    text-decoration: none;
+    color: whitesmoke;
+}
+
+.again-button {
+    margin: 4vh auto;
+    display: block;
+    width: 50%;
+    height: auto;
+}
+
+.home-page {
+    margin-top: 25vh;
+}
+
+#logo {
+    width: 250px;
+}
+
+#loadingGif {
+    margin-top: 250px;
+    width: 50px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#clickMee {
+    margin-top: 40px;
+    width: 250px;
+}
+
+.final-screen {
+    margin-top: 25vh;
+}
+
+.score {
+    font-size: 500%;
+    margin: 0;
+}
+
+.next {
+    margin: 4vh auto;
+    display: block;
+    width: 15%;
+    height: auto;
+}
+
+.again {
+    text-decoration: none;
+    color: whitesmoke;
+}
+
+.hidden {
+    display: none;
+}
+
+table tr:nth-child(even) {
+    background-color: darkgray;
+}

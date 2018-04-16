@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/css/CAGe-style.css">
+    <link rel="manifest" href="/manifest.json">
+</head>
+
+<body>
+    <header class="hidden">
+        <h1 class="player-name">Player 1</h1>
+        <!--<img id="time-icon" src="assets/images/timer.png">        <p id="time">20s</p>-->
+        <p id="time" class="hidden">
+            <span id="counter">1</span>/20</p>
+    </header>
+    <div class="container">
+        <div class="home-page">
+            <img id="logo" src="assets/images/logo.png">
+            <a href="#">
+                <img id="clickMee" src="assets/images/play%20with%20me.png">
+            </a>
+            <img id="loadingGif" class="hidden" src="assets/images/loading.gif"> </div>
+        <div class="question-page hidden">
+            <div>
+                <h2 class="question-title">Question</h2>
+                <p id="question">
+                    <span>Imagine you purchase car insurance over the telephone, the internet or by post. Two days later you discover
+                        a better deal with another provider and you decide to cancel the original contract. Do you have the
+                        right to do that?</span>
+                </p>
+            </div>
+            <form>
+                <fieldset>
+                    <div class="answers">
+                        <a href="#" class="answer" id="answer-one">
+                            <span>Yes, but you won’t get your money back</span>
+                        </a>
+                        <a href="#" class="answer" id="answer-two">
+                            <span>Yes, but you have to pay an administration fee</span>
+                        </a>
+                        <a href="#" class="answer" id="answer-three">
+                            <span>Yes, and without paying anything</span>
+                        </a>
+                        <a href="#" class="answer" id="answer-four">
+                            <span>No, you don’t</span>
+                        </a>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+        <div class="nickname-panel hidden">
+            <input type="text" id="nickname" name="nickname" maxlength="10" placeholder="Enter a name">
+            <img class="next" src="assets/images/next.png" /> </div>
+        <div id="success" class="hidden">
+            <img class="info-image" id="correct-image" src="assets/images/correct.png" />
+            <h1 class="info-text">Correct!</h1>
+            <a href="#" class="info-learn">Click here to learn more</a>
+            <a href="#" class="info-next next-succes" id="correctNext">Go to next question
+                <span>
+                    <img class="next" src="assets/images/next.png" />
+                </span>
+            </a>
+        </div>
+        <div id="failure" class="hidden">
+            <img class="info-image" id="wrong-image" src="assets/images/wrong.png" />
+            <h1 class="info-text">Wrong!</h1>
+            <a href="#" class="info-learn">Click here to learn more</a>
+            <a href="#" class="info-next next-false" id="falseNext">Go to next question
+                <span>
+                    <img class="next" src="assets/images/next.png" />
+                </span>
+            </a>
+        </div>
+        <div class="final-screen hidden">
+            <p class="score">0</p>
+            <a href="#" class="again">Final score
+                <span>
+                    <img class="again-button" src="assets/images/play%20with%20me.png" />
+                </span>
+            </a>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="assets/js/script.js"></script>
+    <script src="manup.min.js"></script>
+</body>
+
+</html>
