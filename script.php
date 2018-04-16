@@ -72,8 +72,8 @@ function questionsCount()
 {
     try {
         $servername = "localhost";
-        $username = "kevin";
-        $password = "kevin";
+        $username = "consumee";
+        $password = "consumee";
         $database = "consumee";
 
         $conn = new PDO("mysql:host=$servername;dbname=$database", $username, $password);

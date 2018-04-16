@@ -73,9 +73,9 @@ fieldset {
 }
 
 #question {
-    font-size: XX-large;
+    font-size: 1em;
     width: 90%;
-    height: 11vh;
+    height: 8vh;
     margin: auto;
     color: #FF9100;
     word-wrap: break-word;
@@ -92,12 +92,16 @@ fieldset {
     display: table;
     width: 90%;
     height: 14vh;
-    margin: 15px 0 15px 0;
-    font-size: large;
+    margin: 12px 0;
+    font-size: 1em;
     border-radius: 10px;
-    padding-left: 10px;
-    padding-right: 10px;
     text-decoration: none;
+}
+
+.answers {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .selectedAnswer {
@@ -161,8 +165,9 @@ fieldset {
 }
 
 #clickMee {
-    margin-top: 40px;
     width: 250px;
+    display: block;
+    margin: 40px auto 0 auto;
 }
 
 .final-screen {
@@ -170,7 +175,7 @@ fieldset {
 }
 
 .score {
-    font-size: 500%;
+    font-size: 400%;
     margin: 0;
 }
 

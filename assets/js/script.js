@@ -22,18 +22,8 @@ var totalQuestions = 1;
 $(document).ready(function () {
     elementsToResize = ["answer-one", "answer-two", "answer-three", "answer-four", "question"];
 
-
-    resizeNow()
-
-
 });
-var resizeNow = function () {
 
-    for (i = 0; i < elementsToResize.length; i++) {
-        //console.log(elementsToResize[i] + ":");
-        resizeFont(elementsToResize[i]);
-    }
-}
 
 var verifyQuestion = function (pickedAnswer) {
     console.log("checking " + pickedAnswer);
@@ -55,24 +45,6 @@ $('#logo').on("click", function () {
         window.location.replace("http://isitbeeroclock.com/");
     }
 });
-
-function resizeFont(el) {
-    //console.log($.trim($("#" + el).text()).length);
-    var charLength = $.trim($("#" + el + " span").text()).length;
-    //console.log(charLength);
-    if (charLength <= 30) {
-        console.log("large");
-        $("#" + el).css("font-size", "20pt");
-    } else if (charLength > 30 && charLength <= 50) {
-        $("#" + el).css("font-size", "15pt");
-    } else if (charLength > 50 && charLength <= 70) {
-        $("#" + el).css("font-size", "12pt");
-    } else if (charLength > 70 && charLength <= 100) {
-        $("#" + el).css("font-size", "10pt");
-    } else if (charLength > 100) {
-        $("#" + el).css("font-size", "8pt")
-    }
-}
 
 $(".answer span").on("click", function () {
 
@@ -128,8 +100,6 @@ var loadQuestion = function (givenQuestion) {
     $("#answer-two span").text(givenQuestion[randomTable[1]]);
     $("#answer-three span").text(givenQuestion[randomTable[2]]);
     $("#answer-four span").text(givenQuestion[randomTable[3]]);
-    resizeNow();
-    resizeFont("question");
 
 }
 
@@ -229,8 +199,6 @@ var questions = function () {
             if (typeof console != "undefined") {
                 console.log(jqXHR.responseText);
                 console.log(textStatus, errorThrown);
-
-
             }
 
         }
