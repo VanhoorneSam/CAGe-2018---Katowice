@@ -20,6 +20,8 @@ var counter = 0;
 var totalQuestions = 20;
 var timer = 0;
 
+
+
 var qObject = {
 
 
@@ -161,7 +163,8 @@ $(".nickname-panel .next").on("click", function () {
 
 $(".stop").on("click", function () {
     $(".final-screen").fadeIn("normal");
-    $("header").fadeOut("normal");
+    $("#succes, #failure, header, .question-page").fadeOut("normal");
+
     $(".score").text(totalScore);
 
 });
