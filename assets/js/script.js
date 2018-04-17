@@ -17,7 +17,7 @@ var correctAnswer;
 var currentQuestionIndex = 0;
 var totalScore = 0;
 var counter = 0;
-var totalQuestions = 20;
+var totalQuestions = 2;
 var timer = 0;
 
 
@@ -34,7 +34,7 @@ $(document).ready(function () {
 
 var grade = function(rightWrong)
 {
-    questionsObject[currentQuestionIndex].answerCorrect=rightWrong;
+    questionsObject[currentQuestionIndex - 1].answerCorrect=rightWrong;
     //console.log(questionsObject);
 };
 
@@ -103,17 +103,17 @@ $(".home-page a").on("click", function () {
 
 var loadQuestion = function (givenQuestion) {
     var randomTable = [1, 2, 3, 4];
-    $("#question span").text(givenQuestion[0]);
-    console.log(givenQuestion);
-    //delete givenQuestion[0];
-    console.log(givenQuestion);
-    correctAnswer = givenQuestion[1];
-    console.log(givenQuestion[1]);
-    shuffle(randomTable);
-    $("#answer-one span").text(givenQuestion[randomTable[0]]);
-    $("#answer-two span").text(givenQuestion[randomTable[1]]);
-    $("#answer-three span").text(givenQuestion[randomTable[2]]);
-    $("#answer-four span").text(givenQuestion[randomTable[3]]);
+    $("#question span").text(givenQuestion['question']);
+    delete givenQuestion[0];
+    correctAnswer = givenQuestion.rightAnswer;
+    var allAnswers  = [];
+    allAnswers.push(givenQuestion['rightAnswer']);
+    givenQuestion['wrongAnswers'].forEach(x => allAnswers.push(x));
+    shuffle(allAnswers);
+    $("#answer-one span").text([allAnswers[0]]);
+    $("#answer-two span").text(allAnswers[randomTable[1]]);
+    $("#answer-three span").text(allAnswers[randomTable[2]]);
+    $("#answer-four span").text(allAnswers[randomTable[3]]);
 
 }
 
@@ -121,15 +121,17 @@ var loadQuestion = function (givenQuestion) {
 var nextQuestion = function () {
 
     $("#counter").text(currentQuestionIndex + 1);
+    console.log(currentQuestionIndex);
+    console.log(totalQuestions);
     if (currentQuestionIndex === totalQuestions) {
         $(".final-screen").fadeIn("normal");
         $("header").fadeOut("normal");
         $(".score").text(totalScore);
     } else {
         $(".answer").removeClass("selectedAnswer");
-        currentQuestionIndex++;
         $(".question-page").fadeIn("normal");
         loadQuestion(questionsObject[currentQuestionIndex]);
+        currentQuestionIndex++;
     }
 };
 
@@ -141,16 +143,18 @@ $("a.next-succes").on("click", function () {
     totalScore++;
     $("#success").fadeOut("normal");
     console.log("next");
-    nextQuestion();
     grade(true);
+    nextQuestion();
+
 });
 
 
 $("a.next-false").on("click", function () {
     $("#failure").fadeOut("normal");
     console.log("next");
-    nextQuestion();
     grade(false);
+    nextQuestion();
+
 
 });
 
@@ -184,7 +188,7 @@ $("#nickname").keyup(function () {
 var totalSeconds = 0;
 function setTime() {
     totalSeconds++;
-    console.log(pad(totalSeconds % 60) + ":" + pad(parseInt(totalSeconds / 60)))
+  //  console.log(pad(totalSeconds % 60) + ":" + pad(parseInt(totalSeconds / 60)))
 }
 function pad(val) {
     var valString = val + "";
@@ -220,7 +224,7 @@ function shuffle(array) {
 
 var questions = function () {
     $.ajax({
-        url: "script.php",
+        url: "questions.php",
         data: "action=question",
         dataType: "JSON",
         type: "POST",
@@ -231,6 +235,7 @@ var questions = function () {
             for (i = 0; i < data.length; i++) {
                 questionsObject[i] = JSON.parse(questionsObject[i]);
             }
+            totalQuestions = questionsObject.length;
             console.log(questionsObject);
             //console.log(questionsObject);
 
