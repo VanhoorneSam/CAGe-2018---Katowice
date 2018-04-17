@@ -21,28 +21,23 @@ var totalQuestions = 2;
 var timer = 0;
 
 
-
-var qObject = {
-
-
-};
+var qObject = {};
 
 $(document).ready(function () {
     elementsToResize = ["answer-one", "answer-two", "answer-three", "answer-four", "question"];
 
 });
 
-var grade = function(rightWrong)
-{
-    questionsObject[currentQuestionIndex - 1].answerCorrect=rightWrong;
+var grade = function (rightWrong) {
+    questionsObject[currentQuestionIndex - 1].answerCorrect = rightWrong;
     //console.log(questionsObject);
 };
 
 var verifyQuestion = function (pickedAnswer) {
     console.log("checking " + pickedAnswer);
     $(".question-page").fadeOut("normal", function () {
-        console.log(pickedAnswer + '=' + correctAnswer);
-        console.log(pickedAnswer == correctAnswer);
+        //console.log(pickedAnswer + '=' + correctAnswer);
+        //console.log(pickedAnswer == correctAnswer);
         if (pickedAnswer === correctAnswer) {
             $("#success").fadeIn("normal");
 
@@ -106,7 +101,7 @@ var loadQuestion = function (givenQuestion) {
     $("#question span").text(givenQuestion['question']);
     delete givenQuestion[0];
     correctAnswer = givenQuestion.rightAnswer;
-    var allAnswers  = [];
+    var allAnswers = [];
     allAnswers.push(givenQuestion['rightAnswer']);
     givenQuestion['wrongAnswers'].forEach(x => allAnswers.push(x));
     shuffle(allAnswers);
@@ -121,8 +116,6 @@ var loadQuestion = function (givenQuestion) {
 var nextQuestion = function () {
 
     $("#counter").text(currentQuestionIndex + 1);
-    console.log(currentQuestionIndex);
-    console.log(totalQuestions);
     if (currentQuestionIndex === totalQuestions) {
         $(".final-screen").fadeIn("normal");
         $("header").fadeOut("normal");
@@ -134,8 +127,6 @@ var nextQuestion = function () {
         currentQuestionIndex++;
     }
 };
-
-
 
 
 $("a.next-succes").on("click", function () {
@@ -161,8 +152,7 @@ $("a.next-false").on("click", function () {
 $(".nickname-panel .next").on("click", function () {
     $(".nickname-panel").fadeOut("normal", function () {
         $("#time").fadeIn("normal");
-        $(".stop").fadeIn().css("display","block");
-        console.log(questionsObject);
+        $(".stop").fadeIn().css("display", "block");
         loadQuestion(questionsObject[currentQuestionIndex]);
         currentQuestionIndex++;
         $(".question-page").fadeIn("normal");
@@ -186,10 +176,12 @@ $("#nickname").keyup(function () {
 });
 
 var totalSeconds = 0;
+
 function setTime() {
     totalSeconds++;
-  //  console.log(pad(totalSeconds % 60) + ":" + pad(parseInt(totalSeconds / 60)))
+
 }
+
 function pad(val) {
     var valString = val + "";
     if (valString.length < 2) {
