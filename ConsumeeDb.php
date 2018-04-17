@@ -38,6 +38,35 @@ class ConsumeeDb{
         return null;
     }
 
+    function getQuestionInNewFormat($number){
+        global $config;
+        //Met Prepared Statement
+        try {
+
+            $conn = new PDO("mysql:host=" . $config["host"] . ";dbname=" . $config["database"], $config["username"], $config["password"]);
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $stmt = $conn->prepare("
+
+                   select q.idQuestion, q.nameQuestion, a.nameAnswer, a.IsCorrect, ca.nameCategorie, replace( c.nameChapter,'\"',\"'\") as nameChapter from question q 
+join answer a on q.idQuestion = a.idQuestion
+join chapter c on q.idChapter = c.idChapter
+join categorie ca on c.idCategorie = ca.idCategorie
+where q.idQuestion = $number
+
+                ");
+            $stmt->execute();
+
+            $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
+            $questions = $stmt->fetchAll();
+
+            return $questions;
+        } catch (PDOException $e) {
+            throw new ConsumeeException("something went wrong");
+        }
+        return null;
+    }
+
+
     function getQuestionCount()
     {
         try {
@@ -61,8 +90,17 @@ class ConsumeeDb{
     {
         global $jsonUtil;
 
-        $questions = $this->getQuestions($number);
-        return $jsonUtil->questionsAsJson($questions);
+        $question = $this->getQuestions($number);
+
+        return $jsonUtil->questionsAsJson($question);
+    }
+
+    function getNthQuestionNewFormat($number){
+        global $jsonUtil;
+
+        $question = $this->getQuestionInNewFormat($number);
+
+        return $jsonUtil->questionAsNewJson($question);
     }
 
 }
