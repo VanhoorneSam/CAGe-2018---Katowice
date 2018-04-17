@@ -19,6 +19,12 @@ var totalScore = 0;
 var counter = 0;
 var totalQuestions = 1;
 var timer = 0;
+
+var qObject = {
+
+
+};
+
 $(document).ready(function () {
     elementsToResize = ["answer-one", "answer-two", "answer-three", "answer-four", "question"];
 
@@ -32,6 +38,7 @@ var verifyQuestion = function (pickedAnswer) {
         console.log(pickedAnswer == correctAnswer);
         if (pickedAnswer === correctAnswer) {
             $("#success").fadeIn("normal");
+
         } else {
             $("#failure").fadeIn("normal");
         }
@@ -117,12 +124,13 @@ var nextQuestion = function () {
         $(".question-page").fadeIn("normal");
         loadQuestion(questionsObject[currentQuestionIndex]);
     }
+};
 
 
-}
 
 
 $("a.next-succes").on("click", function () {
+
     totalScore++;
     $("#success").fadeOut("normal");
     console.log("next");
@@ -138,11 +146,14 @@ $("a.next-false").on("click", function () {
 
 $(".nickname-panel .next").on("click", function () {
     $(".nickname-panel").fadeOut("normal", function () {
+        $("#time").fadeIn("normal");
+        $(".stop").fadeIn().css("display","block");
         console.log(questionsObject);
         loadQuestion(questionsObject[currentQuestionIndex]);
         currentQuestionIndex++;
         $(".question-page").fadeIn("normal");
-        $("#time").fadeIn("normal");
+
+
         setInterval(setTime, 1000);
     });
 
