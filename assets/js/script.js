@@ -147,6 +147,13 @@ $(".nickname-panel .next").on("click", function () {
 
 });
 
+$(".stop").on("click", function () {
+    $(".final-screen").fadeIn("normal");
+    $("header").fadeOut("normal");
+    $(".score").text(totalScore);
+
+});
+
 $("#nickname").keyup(function () {
     $('.player-name').text($(this).val());
 });

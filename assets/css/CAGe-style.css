@@ -186,6 +186,13 @@ fieldset {
     height: auto;
 }
 
+.stop {
+    margin: auto;
+    display: block;
+    width: auto;
+    max-height: 95%;
+}
+
 .again {
     text-decoration: none;
     color: whitesmoke;
