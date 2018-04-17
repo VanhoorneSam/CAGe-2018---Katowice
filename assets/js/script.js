@@ -18,7 +18,7 @@ var currentQuestionIndex = 0;
 var totalScore = 0;
 var counter = 0;
 var totalQuestions = 1;
-
+var timer = 0;
 $(document).ready(function () {
     elementsToResize = ["answer-one", "answer-two", "answer-three", "answer-four", "question"];
 
@@ -143,6 +143,7 @@ $(".nickname-panel .next").on("click", function () {
         currentQuestionIndex++;
         $(".question-page").fadeIn("normal");
         $("#time").fadeIn("normal");
+        setInterval(setTime, 1000);
     });
 
 });
@@ -151,8 +152,19 @@ $("#nickname").keyup(function () {
     $('.player-name').text($(this).val());
 });
 
-
-
+var totalSeconds = 0;
+function setTime() {
+    totalSeconds++;
+    console.log(pad(totalSeconds % 60) + ":" + pad(parseInt(totalSeconds / 60)))
+}
+function pad(val) {
+    var valString = val + "";
+    if (valString.length < 2) {
+        return "0" + valString;
+    } else {
+        return valString;
+    }
+}
 
 
 function shuffle(array) {
