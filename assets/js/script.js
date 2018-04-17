@@ -41,40 +41,55 @@ var grade = function(rightWrong)
 var finalGrade = function()
 {
     console.log("going to the final grading");
-    var consumptionTotal;
-    var consumptionCorrect;
-    var companiesTotal;
-    var companiesCorrect;
-    var consumersTotal;
-    var consumersCorrect;
+    var consumptionTotal=0;
+    var consumptionCorrect=0;
+    var companiesTotal=0;
+    var companiesCorrect=0;
+    var consumersTotal=0;
+    var consumersCorrect=0;
+    var otherTotal = 0;
+    var otherCorrect=0;
 
     // category names will likely change once the backend is done
 
-    for (i = 0; i < questionsObject.length; i++) {
+
+    for ( var i = 0; i < currentQuestionIndex; i++) {
+
         switch(questionsObject[i].category) {
-            case "consumption":
+            case "Consumption in Europe; General Characteristics and Consumer Awareness Importance":
                 consumptionTotal++;
                 if(questionsObject[i].correct_answer){
                     consumptionCorrect++;
                 }
                 break;
-            case "companies":
+            case "Companies’ Behaviour and Consumer Awareness Relevance":
                 companiesTotal++;
                 if(questionsObject[i].correct_answer){
                     companiesCorrect++;
                 }
                 break;
-            case "consumer":
+            case "Consumer Protection in Europe":
                 consumersTotal++;
                 if(questionsObject[i].correct_answer){
                     consumersCorrect++;
                 }
                 break;
+            default:
+                otherTotal++;
+                if(questionsObject[i].correct_answer){
+                    otherCorrect++;
+                }
+                break;
         }
     }
-    $("score-consumption").text(consumptionCorrect +" / "+ consumptionTotal);
-    $(".score").text(totalScore);
+    $("#score-consumption").text(consumptionCorrect +" / "+ consumptionTotal);
+    $("#score-companies").text(companiesCorrect +" / "+ companiesTotal);
+    $("#score-consumer").text(consumersCorrect +" / "+ consumersTotal);
 
+    $(".score").text(totalScore);
+    if(otherTotal>0){
+        $("#score-categories").append("Other " + otherCorrect + " / "+ otherTotal);
+    }
 };
 
 
@@ -94,7 +109,7 @@ var verifyQuestion = function (pickedAnswer) {
         }
     });
 
-}
+};
 
 $('#logo').on("click", function () {
     counter++;
