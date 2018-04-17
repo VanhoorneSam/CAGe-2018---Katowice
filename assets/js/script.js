@@ -17,7 +17,7 @@ var correctAnswer;
 var currentQuestionIndex = 0;
 var totalScore = 0;
 var counter = 0;
-var totalQuestions = 1;
+var totalQuestions = 20;
 var timer = 0;
 $(document).ready(function () {
     elementsToResize = ["answer-one", "answer-two", "answer-three", "answer-four", "question"];
