@@ -1,10 +1,11 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: jorden
- * Date: 4/26/2017
- * Time: 9:43 AM
+ * User: Dante
+ * Date: 17/04/2018
+ * Time: 11:28
  */
+
 
 include("ConsumeeDb.php");
 include("ConsumeeException.php");
@@ -23,12 +24,11 @@ function getShuffledQuestions($count){
 
     $array = range(1, $db->getQuestionCount());
     shuffle($array);
-
     $finalArray = array();
     for ($i = 0; $i < $count; $i++) {
 
         $nummer = $array[$i];
-        $object = $db->getNthQuestion($nummer);
+        $object = $db->getNthQuestionNewFormat($nummer);
 
         $finalArray[] = $object;
     }

@@ -20,6 +20,8 @@ var counter = 0;
 var totalQuestions = 20;
 var timer = 0;
 
+
+
 var qObject = {
 
 
@@ -30,6 +32,51 @@ $(document).ready(function () {
 
 });
 
+var grade = function(rightWrong)
+{
+    questionsObject[currentQuestionIndex].correct_answer=rightWrong;
+    //console.log(questionsObject);
+};
+
+var finalGrade = function()
+{
+    console.log("going to the final grading");
+    var consumptionTotal;
+    var consumptionCorrect;
+    var companiesTotal;
+    var companiesCorrect;
+    var consumersTotal;
+    var consumersCorrect;
+
+    // category names will likely change once the backend is done
+
+    for (i = 0; i < questionsObject.length; i++) {
+        switch(questionsObject[i].category) {
+            case "consumption":
+                consumptionTotal++;
+                if(questionsObject[i].correct_answer){
+                    consumptionCorrect++;
+                }
+                break;
+            case "companies":
+                companiesTotal++;
+                if(questionsObject[i].correct_answer){
+                    companiesCorrect++;
+                }
+                break;
+            case "consumer":
+                consumersTotal++;
+                if(questionsObject[i].correct_answer){
+                    consumersCorrect++;
+                }
+                break;
+        }
+    }
+    $("score-consumption").text(consumptionCorrect +" / "+ consumptionTotal);
+    $(".score").text(totalScore);
+
+};
+
 
 var verifyQuestion = function (pickedAnswer) {
     console.log("checking " + pickedAnswer);
@@ -38,9 +85,12 @@ var verifyQuestion = function (pickedAnswer) {
         console.log(pickedAnswer == correctAnswer);
         if (pickedAnswer === correctAnswer) {
             $("#success").fadeIn("normal");
+            grade(true);
 
         } else {
             $("#failure").fadeIn("normal");
+            grade(false);
+
         }
     });
 
@@ -117,7 +167,7 @@ var nextQuestion = function () {
     if (currentQuestionIndex === totalQuestions) {
         $(".final-screen").fadeIn("normal");
         $("header").fadeOut("normal");
-        $(".score").text(totalScore);
+        finalGrade();
     } else {
         $(".answer").removeClass("selectedAnswer");
         currentQuestionIndex++;
@@ -142,6 +192,7 @@ $("a.next-false").on("click", function () {
     $("#failure").fadeOut("normal");
     console.log("next");
     nextQuestion();
+
 });
 
 $(".nickname-panel .next").on("click", function () {
@@ -161,8 +212,8 @@ $(".nickname-panel .next").on("click", function () {
 
 $(".stop").on("click", function () {
     $(".final-screen").fadeIn("normal");
-    $("header").fadeOut("normal");
-    $(".score").text(totalScore);
+    $("#succes, #failure, header, .question-page").fadeOut("normal");
+    finalGrade();
 
 });
 
