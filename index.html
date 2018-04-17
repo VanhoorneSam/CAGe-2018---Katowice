@@ -3,75 +3,86 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Consumee</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/css/reset.css">
     <link rel="stylesheet" href="assets/css/CAGe-style.css">
     <link rel="manifest" href="/manifest.json">
 </head>
 
 <body>
-    <header class="hidden">
-        <h1 class="player-name">Player 1</h1>
-        <!--<img id="time-icon" src="assets/images/timer.png">        <p id="time">20s</p>-->
-        <p id="time" class="hidden">
-            <span id="counter">1</span>/20</p>
-        <img class="stop hidden" src="assets/images/stop.png" />
-    </header>
-    <div class="container">
-        <div class="home-page">
-            <img id="logo" src="assets/images/logo.png">
-            <a href="#">
-                <img id="clickMee" src="assets/images/play%20with%20me.png">
-            </a>
-            <img id="loadingGif" class="hidden" src="assets/images/loading.gif"> </div>
-        <div class="question-page hidden">
-            <div>
-                <h2 class="question-title">Question</h2>
-                <p id="question">
+<header class="hidden">
+    <a href="#"><img id="home" src="images/icons/Home.svg" alt="home" title="home"></a>
+    <h1 class="player-name">Player 1</h1>
+    <!--<img id="time-icon" src="assets/images/timer.png">        <p id="time">20s</p>-->
+    <p id="time" class="hidden">
+        <span id="counter">1</span>/20</p>
+</header>
+<div class="container">
+    <div class="home-page">
+        <img id="logo" src="assets/images/logo.png">
+        <a href="#">
+            <img id="clickMee" src="assets/images/play%20with%20me.png">
+        </a>
+        <img id="loadingGif" class="hidden" src="assets/images/loading.gif"></div>
+    <div class="question-page hidden">
+        <div>
+            <h2 class="question-title">Question</h2>
+            <p id="question">
                     <span>Imagine you purchase car insurance over the telephone, the internet or by post. Two days later you discover
                         a better deal with another provider and you decide to cancel the original contract. Do you have the
                         right to do that?</span>
-                </p>
-            </div>
-            <form>
-                <fieldset>
-                    <div class="answers">
-                        <a href="#" class="answer" id="answer-one">
-                            <span>Yes, but you won’t get your money back</span>
-                        </a>
-                        <a href="#" class="answer" id="answer-two">
-                            <span>Yes, but you have to pay an administration fee</span>
-                        </a>
-                        <a href="#" class="answer" id="answer-three">
-                            <span>Yes, and without paying anything</span>
-                        </a>
-                        <a href="#" class="answer" id="answer-four">
-                            <span>No, you don’t</span>
-                        </a>
-                    </div>
-                </fieldset>
-            </form>
+            </p>
         </div>
-        <div class="nickname-panel hidden">
-            <input type="text" id="nickname" name="nickname" maxlength="10" placeholder="Enter a name">
-            <img class="next" src="assets/images/next.png" /> </div>
-        <div id="success" class="hidden">
-            <img class="info-image" id="correct-image" src="assets/images/correct.png" />
-            <h1 class="info-text">Correct!</h1>
-            <a href="#" class="info-learn">Click here to learn more</a>
-            <a href="#" class="info-next next-succes" id="correctNext">Go to next question
-                <span>
-                    <img class="next" src="assets/images/next.png" />
+        <form>
+            <fieldset>
+                <div class="answers">
+                    <a href="#" class="answer" id="answer-one">
+                        <span>Yes, but you won’t get your money back</span>
+                    </a>
+                    <a href="#" class="answer" id="answer-two">
+                        <span>Yes, but you have to pay an administration fee</span>
+                    </a>
+                    <a href="#" class="answer" id="answer-three">
+                        <span>Yes, and without paying anything</span>
+                    </a>
+                    <a href="#" class="answer" id="answer-four">
+                        <span>No, you don’t</span>
+                    </a>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <div class="nickname-panel hidden">
+        <input type="text" id="nickname" name="nickname" maxlength="10" placeholder="Enter a name">
+        <img class="next" src="assets/images/next.png"/>
+    </div>
+
+    <div class="hidden" id="difficulty">
+        <h1>Choose a number of questions</h1>
+        <a href="#" data-amount="10" class="difficulty">10</a>
+        <a href="#" data-amount="25" class="difficulty">25</a>
+        <a href="#" data-amount="40" class="difficulty">40</a>
+        <a href="#" data-amount="50" class="difficulty">50</a>
+    </div>
+
+    <div id="success" class="hidden">
+        <img class="info-image" id="correct-image" src="assets/images/correct.png"/>
+        <h1 class="info-text">Correct!</h1>
+        <a href="#" class="info-learn">Click here to learn more</a>
+        <a href="#" class="info-next next-succes" id="correctNext">Go to next question
+            <span>
+                    <img class="next" src="assets/images/next.png"/>
                 </span>
-            </a>
-        </div>
-        <div id="failure" class="hidden">
-            <img class="info-image" id="wrong-image" src="assets/images/wrong.png" />
-            <h1 class="info-text">Wrong!</h1>
-            <a href="#" class="info-learn">Click here to learn more</a>
-            <a href="#" class="info-next next-false" id="falseNext">Go to next question
-                <span>
-                    <img class="next" src="assets/images/next.png" />
+        </a>
+    </div>
+    <div id="failure" class="hidden">
+        <img class="info-image" id="wrong-image" src="assets/images/wrong.png"/>
+        <h1 class="info-text">Wrong!</h1>
+        <a href="#" class="info-learn">Click here to learn more</a>
+        <a href="#" class="info-next next-false" id="falseNext">Go to next question
+            <span>
+                    <img class="next" src="assets/images/next.png"/>
                 </span>
             </a>
         </div>
@@ -86,12 +97,12 @@
                 <span>
                     <img class="again-button" src="assets/images/play%20with%20me.png" />
                 </span>
-            </a>
-        </div>
+        </a>
     </div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
-    <script src="assets/js/script.js"></script>
-    <script src="manup.min.js"></script>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+<script src="assets/js/script.js"></script>
+<script src="manup.min.js"></script>
 </body>
 
 </html>

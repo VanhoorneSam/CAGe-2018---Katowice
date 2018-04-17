@@ -3,6 +3,10 @@
     src: url("../fonts/DK Lemon Yellow Sun.otf");
 }
 
+html{
+    height:100%;
+}
+
 body {
     font-family: 'myFont';
     color: whitesmoke;
@@ -11,16 +15,21 @@ body {
 }
 
 header {
-    position: absolute;
-    top: 0;
-    left: 0;
     background-color: #1B1B1B;
     width: 100%;
-    height: 10vh;
+    height: 13vh;
+
+}
+
+h1{
+    margin: 2rem auto;
+    font-size: xx-large;
+    width: 50vw;
+    border-bottom: 1px whitesmoke solid;
 }
 
 .nickname-panel {
-    margin-top: 40vh;
+    margin-top: 20%;
 }
 
 #nickname {
@@ -36,27 +45,16 @@ header {
 
 .player-name {
     font-size: 6vh;
-    margin: 0;
-    width: 40%;
-    position: absolute;
-    top: 2vh;
-    left: 5%;
+    display: inline;
 }
 
 #time {
     position: absolute;
-    top: -2vh;
+    top: 5vh;
     right: 5vw;
     font-size: 5vh;
 }
 
-#time-icon {
-    position: absolute;
-    top: 3vh;
-    right: 15vw;
-    width: auto;
-    height: 5vh;
-}
 
 fieldset {
     width: 85%;
@@ -73,35 +71,41 @@ fieldset {
 }
 
 #question {
-    font-size: 1em;
+    font-size: XX-large;
     width: 90%;
-    height: 8vh;
     margin: auto;
     color: #FF9100;
     word-wrap: break-word;
     padding-top: 10px;
+    margin-bottom: 1rem;
 }
 
 .container {
     text-align: center;
 }
 
-.answer {
+.answer, .difficulty {
     color: whitesmoke;
     border: 1px solid #FF9100;
     display: table;
     width: 90%;
     height: 14vh;
-    margin: 12px 0;
-    font-size: 1em;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 2rem;
+    font-size: large;
     border-radius: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
     text-decoration: none;
+    outline: none;
 }
 
-.answers {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+.difficulty{
+    line-height: 14vh;
+    height: 14vh;
+    width: 14vh;
+    display: inline-block;
 }
 
 .selectedAnswer {
@@ -165,9 +169,10 @@ fieldset {
 }
 
 #clickMee {
+    margin-top: 40px;
     width: 250px;
     display: block;
-    margin: 40px auto 0 auto;
+    margin: auto;
 }
 
 .final-screen {
@@ -175,7 +180,7 @@ fieldset {
 }
 
 .score {
-    font-size: 400%;
+    font-size: 500%;
     margin: 0;
 }
 
@@ -184,14 +189,6 @@ fieldset {
     display: block;
     width: 15%;
     height: auto;
-}
-
-.stop {
-    margin: auto;
-    display: block;
-
-    width: auto;
-    max-height: 95%;
 }
 
 .again {
@@ -205,4 +202,17 @@ fieldset {
 
 table tr:nth-child(even) {
     background-color: darkgray;
+}
+
+#home{
+    margin: 0.6rem 2rem 0rem 2rem;
+    fill: #ff9100;
+}
+
+#difficulty{
+    margin: 1rem;
+}
+
+#difficulty a{
+    font-size: 3rem;
 }

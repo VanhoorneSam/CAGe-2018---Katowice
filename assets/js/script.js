@@ -16,26 +16,27 @@ var questionsObject;
 var correctAnswer;
 var currentQuestionIndex = 0;
 var totalScore = 0;
-var counter = 0;
-var totalQuestions = 20;
-var timer = 0;
+var totalQuestions = 1;
 
-
-
-var qObject = {
-
-
-};
+//requesting questions not implemented
 
 $(document).ready(function () {
-    elementsToResize = ["answer-one", "answer-two", "answer-three", "answer-four", "question"];
+
+    $(".nickname-panel .next").on("click", startGame);
+    $("#difficulty a").on("click", askName);
+    $("#home").on("click", reset);
 
 });
 
-var grade = function(rightWrong)
-{
-    questionsObject[currentQuestionIndex].correct_answer=rightWrong;
-    //console.log(questionsObject);
+var askName = function () {
+
+    $("#difficulty").fadeOut("fast", function () {
+        $(".nickname-panel").fadeIn("slow");
+    })
+};
+
+var reset = function () {
+    location.reload();
 };
 
 var finalGrade = function()
@@ -49,6 +50,7 @@ var finalGrade = function()
     var consumersCorrect=0;
     var otherTotal = 0;
     var otherCorrect=0;
+
 
     // category names will likely change once the backend is done
 
@@ -93,6 +95,20 @@ var finalGrade = function()
 };
 
 
+var startGame =function () {
+
+    RequestQuestions();
+
+
+    $(".nickname-panel").fadeOut("normal", function () {
+        console.log(questionsObject);
+        loadQuestion(questionsObject[currentQuestionIndex]);
+        currentQuestionIndex++;
+        $(".question-page").fadeIn("normal");
+        $("#time").fadeIn("normal");
+    });
+}
+
 var verifyQuestion = function (pickedAnswer) {
     console.log("checking " + pickedAnswer);
     $(".question-page").fadeOut("normal", function () {
@@ -100,23 +116,13 @@ var verifyQuestion = function (pickedAnswer) {
         console.log(pickedAnswer == correctAnswer);
         if (pickedAnswer === correctAnswer) {
             $("#success").fadeIn("normal");
-            grade(true);
-
         } else {
             $("#failure").fadeIn("normal");
-            grade(false);
-
         }
     });
 
 };
 
-$('#logo').on("click", function () {
-    counter++;
-    if (counter >= 10) {
-        window.location.replace("http://isitbeeroclock.com/");
-    }
-});
 
 $(".answer span").on("click", function () {
 
@@ -136,19 +142,15 @@ $(".answer span").on("click", function () {
 $(".home-page a").on("click", function () {
 
     console.log("check");
-    $(this).fadeOut("normal", function () {
+    $(this).fadeOut("fast", function () {
 
-        $(".home-page").fadeOut("normal", function () {
+        $(".home-page").fadeOut("fast", function () {
 
-            $("#loadingGif").fadeIn("normal", function () {
+            $("#loadingGif").fadeIn("fast");
 
-                questions();
-
-
-            })
-
-            $("#loadingGif").fadeOut("normal", function () {
-                $(".nickname-panel").fadeIn("normal");
+            $("#loadingGif").fadeOut("fast", function () {
+                $("#difficulty").fadeIn("normal");
+                //$(".nickname-panel").fadeIn("normal");
                 $("header").fadeIn("normal");
             }).css("display", "block");
 
@@ -173,7 +175,7 @@ var loadQuestion = function (givenQuestion) {
     $("#answer-three span").text(givenQuestion[randomTable[2]]);
     $("#answer-four span").text(givenQuestion[randomTable[3]]);
 
-}
+};
 
 
 var nextQuestion = function () {
@@ -182,7 +184,7 @@ var nextQuestion = function () {
     if (currentQuestionIndex === totalQuestions) {
         $(".final-screen").fadeIn("normal");
         $("header").fadeOut("normal");
-        finalGrade();
+        $(".score").text(totalScore);
     } else {
         $(".answer").removeClass("selectedAnswer");
         currentQuestionIndex++;
@@ -192,10 +194,7 @@ var nextQuestion = function () {
 };
 
 
-
-
 $("a.next-succes").on("click", function () {
-
     totalScore++;
     $("#success").fadeOut("normal");
     console.log("next");
@@ -207,49 +206,12 @@ $("a.next-false").on("click", function () {
     $("#failure").fadeOut("normal");
     console.log("next");
     nextQuestion();
-
 });
 
-$(".nickname-panel .next").on("click", function () {
-    $(".nickname-panel").fadeOut("normal", function () {
-        $("#time").fadeIn("normal");
-        $(".stop").fadeIn().css("display","block");
-        console.log(questionsObject);
-        loadQuestion(questionsObject[currentQuestionIndex]);
-        currentQuestionIndex++;
-        $(".question-page").fadeIn("normal");
-
-
-        setInterval(setTime, 1000);
-    });
-
-});
-
-$(".stop").on("click", function () {
-    $(".final-screen").fadeIn("normal");
-    $("#succes, #failure, header, .question-page").fadeOut("normal");
-    finalGrade();
-
-});
 
 $("#nickname").keyup(function () {
     $('.player-name').text($(this).val());
 });
-
-var totalSeconds = 0;
-function setTime() {
-    totalSeconds++;
-    console.log(pad(totalSeconds % 60) + ":" + pad(parseInt(totalSeconds / 60)))
-}
-function pad(val) {
-    var valString = val + "";
-    if (valString.length < 2) {
-        return "0" + valString;
-    } else {
-        return valString;
-    }
-}
-
 
 function shuffle(array) {
     console.log("Start shuffling...");
@@ -273,7 +235,7 @@ function shuffle(array) {
 }
 
 
-var questions = function () {
+var RequestQuestions = function () {
     $.ajax({
         url: "script.php",
         data: "action=question",
@@ -299,5 +261,5 @@ var questions = function () {
 
         }
 
-    })
-};
+    });
+}
