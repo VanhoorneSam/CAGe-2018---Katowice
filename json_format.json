@@ -1,0 +1,11 @@
+[
+    {
+        question: "How are you?",
+        correct_answer: "Good",
+        wrong_answers: [
+            "bad", "depressed", "suicidal"
+        ],
+        category: "pointless questions",
+        chapter: "smalltalk"
+    }
+]
