@@ -7,6 +7,9 @@
   "orientation": "portrait",
   "Scope": "/",
   "start_url": "/",
+  "headers": {
+    "Allow-Control-Allow-Origin": "*"
+  },
   "icons": [
     {
       "src": "images/icons/icon-72x72.png",

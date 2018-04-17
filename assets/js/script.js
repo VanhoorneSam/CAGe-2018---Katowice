@@ -221,11 +221,11 @@ var questions = function () {
                 questionsObject[i] = JSON.parse(questionsObject[i]);
             }
             console.log(questionsObject);
-            //console.log(questionsObject);
 
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            console.log("error");
+            console.error("error");
+            console.log(textStatus);
             if (typeof console != "undefined") {
                 console.log(jqXHR.responseText);
                 console.log(textStatus, errorThrown);
