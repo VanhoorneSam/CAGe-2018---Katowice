@@ -32,6 +32,11 @@ $(document).ready(function () {
 
 });
 
+var grade = function(rightWrong)
+{
+    questionsObject[currentQuestionIndex].answerCorrect=rightWrong;
+    //console.log(questionsObject);
+};
 
 var verifyQuestion = function (pickedAnswer) {
     console.log("checking " + pickedAnswer);
@@ -137,6 +142,7 @@ $("a.next-succes").on("click", function () {
     $("#success").fadeOut("normal");
     console.log("next");
     nextQuestion();
+    grade(true);
 });
 
 
@@ -144,6 +150,8 @@ $("a.next-false").on("click", function () {
     $("#failure").fadeOut("normal");
     console.log("next");
     nextQuestion();
+    grade(false);
+
 });
 
 $(".nickname-panel .next").on("click", function () {
