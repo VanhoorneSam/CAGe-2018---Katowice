@@ -33,7 +33,7 @@ class ConsumeeDb{
 
             return $questions;
         } catch (PDOException $e) {
-            throw new ConsumeeException("something went wrong");
+            throw new ConsumeeException($e->getMessage());
         }
         return null;
     }
@@ -61,7 +61,7 @@ where q.idQuestion = $number
 
             return $questions;
         } catch (PDOException $e) {
-            throw new ConsumeeException("something went wrong");
+            throw new ConsumeeException($e->getMessage());
         }
         return null;
     }
@@ -81,8 +81,7 @@ where q.idQuestion = $number
 
             return (count($question));
         } catch (PDOException $e) {
-            throw new ConsumeeException("something went wrong");
-//            echo createJsonError("something went wrong");
+            throw new ConsumeeException($e->getMessage());
         }
     }
 

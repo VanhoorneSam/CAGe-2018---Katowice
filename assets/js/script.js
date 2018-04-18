@@ -97,10 +97,45 @@ var grade = function (rightWrong) {
 
 var startGame = function () {
 
-    RequestQuestions();
+    function success(data){
+        console.log(data);
+        questionsObject = data;
+        for (i = 0; i < data.length; i++) {
+            questionsObject[i] = JSON.parse(questionsObject[i]);
+        }
+        totalQuestions = questionsObject.length;
+        console.log(questionsObject);
 
+        localforage.setItem(KEY_QUESTIONS, JSON.stringify(questionsObject)).then(function () {
+            console.log("cached " + totalQuestions + " questions");
     $("#counter").text("1/" + numberOfChapters * numberOfQuestionsPerChapter);
 
+        })
+
+
+        fadeOutNicknamePanel();
+    }
+
+    function error(jqXHR, textStatus, errorThrown){
+        console.error("error");
+        console.log(textStatus);
+        if (typeof console != "undefined") {
+            console.log(jqXHR.responseText);
+            console.log(textStatus, errorThrown);
+        }
+
+        localforage.getItem("questions").then(q => {
+            questionsObject = JSON.parse(q);
+            totalQuestions = questionsObject.length;
+
+            fadeOutNicknamePanel();
+        })
+    }
+
+    RequestQuestions(success, error);
+}
+
+function fadeOutNicknamePanel(){
 
     $(".nickname-panel").fadeOut("normal", function () {
 
@@ -110,6 +145,7 @@ var startGame = function () {
         $("#time").fadeIn("normal");
     });
 }
+
 
 var verifyQuestion = function (pickedAnswer) {
 
@@ -225,17 +261,16 @@ $("a.next-false").on("click", function () {
 
 });
 
-$(".nickname-panel .next").on("click", function () {
-    $(".nickname-panel").fadeOut("normal", function () {
-            $("#time").fadeIn("normal");
-            $(".stop").fadeIn().css("display", "block");
-            //loadQuestion(questionsObject[currentQuestionIndex]);
-            nextQuestion();
-            //currentQuestionIndex++;
-            $(".question-page").fadeIn("normal");
-        }
-    )
-});
+// TODO update function in startGame
+// $(".nickname-panel .next").on("click", function () {
+//     $(".nickname-panel").fadeOut("normal", function () {
+//         $("#time").fadeIn("normal");
+//         $(".stop").fadeIn().css("display", "block");
+//         loadQuestion(questionsObject[currentQuestionIndex]);
+//         currentQuestionIndex++;
+//         $(".question-page").fadeIn("normal");
+//     }
+//     )})
 
 $("#nickname").keyup(function () {
     $('.player-name').text($(this).val());
@@ -245,6 +280,10 @@ var totalSeconds = 0;
 
 function setTime() {
     totalSeconds++;
+
+}
+
+function getQuestionsNetworkFirst(){
 
 }
 
@@ -334,33 +373,14 @@ function pickAmmountOfQuestions(allQuestions) {
 
 }
 
-
-var RequestQuestions = function () {
+var RequestQuestions = function (success, error) {
     $.ajax({
         url: "questions.php",
         data: "action=question",
         dataType: "JSON",
         type: "POST",
         timeout: 3000,
-        success: function (data) {
-            questionsObject = data;
-            for (i = 0; i < data.length; i++) {
-                questionsObject[i] = JSON.parse(questionsObject[i]);
-            }
-            var allQuestions = filterQuestionsIntoChapter(questionsObject);
-            pickAmmountOfQuestions(allQuestions);
-            totalQuestions = Object.keys(questionsObject).length;
-    console.log(totalQuestions);
-
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-
-            if (typeof console != "undefined") {
-                console.log(jqXHR.responseText);
-                console.log(textStatus, errorThrown);
-            }
-
-        }
-
+        success: success,
+        error: error
     });
 };
