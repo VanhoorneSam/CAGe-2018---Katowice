@@ -7,7 +7,7 @@ var totalQuestions = 2;
 var timer = 0;
 var numberOfQuestionsPerChapter;
 var numberOfChapters = 14;
-
+var KEY_QUESTIONS = "questions";
 $(document).ready(function () {
     $(".nickname-panel .next").on("click", startGame);
     $("#difficulty a").on("click", askName);
