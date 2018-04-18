@@ -24,13 +24,11 @@ var timer = 0;
 
 var qObject = {};
 
- $(document).ready( function () {
-     $(".nickname-panel .next").on("click", startGame);
-     $("#difficulty a").on("click", askName);
-     $("#home").on("click", reset);
- });
-
-
+$(document).ready(function () {
+    $(".nickname-panel .next").on("click", startGame);
+    $("#difficulty a").on("click", askName);
+    $("#home").on("click", reset);
+});
 
 
 var askName = function () {
@@ -44,74 +42,73 @@ var reset = function () {
     location.reload();
 };
 
-var finalGrade = function()
-{
-    console.log("going to the final grading");
-    var consumptionTotal=0;
-    var consumptionCorrect=0;
-    var companiesTotal=0;
-    var companiesCorrect=0;
-    var consumersTotal=0;
-    var consumersCorrect=0;
+var finalGrade = function () {
+
+    var consumptionTotal = 0;
+    var consumptionCorrect = 0;
+    var companiesTotal = 0;
+    var companiesCorrect = 0;
+    var consumersTotal = 0;
+    var consumersCorrect = 0;
     var otherTotal = 0;
-    var otherCorrect=0;
+    var otherCorrect = 0;
 
 
     // category names will likely change once the backend is done
 
 
-    for ( var i = 0; i < currentQuestionIndex; i++) {
+    for (var i = 0; i < currentQuestionIndex; i++) {
 
-        switch(questionsObject[i].category) {
+        switch (questionsObject[i].category) {
             case "Consumption in Europe; General Characteristics and Consumer Awareness Importance":
                 consumptionTotal++;
-                if(questionsObject[i].correct_answer){
+                if (questionsObject[i].correct_answer) {
                     consumptionCorrect++;
                 }
                 break;
             case "Companies’ Behaviour and Consumer Awareness Relevance":
                 companiesTotal++;
-                if(questionsObject[i].correct_answer){
+                if (questionsObject[i].correct_answer) {
                     companiesCorrect++;
                 }
                 break;
             case "Consumer Protection in Europe":
                 consumersTotal++;
-                if(questionsObject[i].correct_answer){
+                if (questionsObject[i].correct_answer) {
                     consumersCorrect++;
                 }
                 break;
             default:
                 otherTotal++;
-                if(questionsObject[i].correct_answer){
+                if (questionsObject[i].correct_answer) {
                     otherCorrect++;
                 }
                 break;
         }
     }
-    $("#score-consumption").text(consumptionCorrect +" / "+ consumptionTotal);
-    $("#score-companies").text(companiesCorrect +" / "+ companiesTotal);
-    $("#score-consumer").text(consumersCorrect +" / "+ consumersTotal);
+    $("#score-consumption").text(consumptionCorrect + " / " + consumptionTotal);
+    $("#score-companies").text(companiesCorrect + " / " + companiesTotal);
+    $("#score-consumer").text(consumersCorrect + " / " + consumersTotal);
 
     $(".score").text(totalScore);
-    if(otherTotal>0){
-        $("#score-categories").append("Other " + otherCorrect + " / "+ otherTotal);
+    if (otherTotal > 0) {
+        $("#score-categories").append("Other " + otherCorrect + " / " + otherTotal);
     }
 
-    //console.log(questionsObject);
+
 };
 
 var grade = function (rightWrong) {
     questionsObject[currentQuestionIndex - 1].answerCorrect = rightWrong;
 }
 
-var startGame =function () {
+var startGame = function () {
 
     RequestQuestions();
 
 
     $(".nickname-panel").fadeOut("normal", function () {
-        console.log(questionsObject);
+
         loadQuestion(questionsObject[currentQuestionIndex]);
         currentQuestionIndex++;
         $(".question-page").fadeIn("normal");
@@ -120,14 +117,15 @@ var startGame =function () {
 }
 
 var verifyQuestion = function (pickedAnswer) {
-    console.log("checking " + pickedAnswer);
+
     $(".question-page").fadeOut("normal", function () {
-        //console.log(pickedAnswer + '=' + correctAnswer);
-        //console.log(pickedAnswer == correctAnswer);
+
         if (pickedAnswer === correctAnswer) {
             $("#success").fadeIn("normal");
+            grade(true);
         } else {
             $("#failure").fadeIn("normal");
+            grade(false);
         }
     });
 
@@ -151,7 +149,7 @@ $(".answer span").on("click", function () {
 
 $(".home-page a").on("click", function () {
 
-    console.log("check");
+
     $(this).fadeOut("fast", function () {
 
         $(".home-page").fadeOut("fast", function () {
@@ -207,7 +205,7 @@ var nextQuestion = function () {
 $("a.next-succes").on("click", function () {
     totalScore++;
     $("#success").fadeOut("normal");
-    console.log("next");
+
     grade(true);
     nextQuestion();
 
@@ -216,7 +214,6 @@ $("a.next-succes").on("click", function () {
 
 $("a.next-false").on("click", function () {
     $("#failure").fadeOut("normal");
-    console.log("next");
     grade(false);
     nextQuestion();
 
@@ -225,13 +222,14 @@ $("a.next-false").on("click", function () {
 
 $(".nickname-panel .next").on("click", function () {
     $(".nickname-panel").fadeOut("normal", function () {
-        $("#time").fadeIn("normal");
-        $(".stop").fadeIn().css("display", "block");
-        loadQuestion(questionsObject[currentQuestionIndex]);
-        currentQuestionIndex++;
-        $(".question-page").fadeIn("normal");
-    }
-    )})
+            $("#time").fadeIn("normal");
+            $(".stop").fadeIn().css("display", "block");
+            loadQuestion(questionsObject[currentQuestionIndex]);
+            currentQuestionIndex++;
+            $(".question-page").fadeIn("normal");
+        }
+    )
+})
 
 $("#nickname").keyup(function () {
     $('.player-name').text($(this).val());
@@ -255,7 +253,7 @@ function pad(val) {
 
 
 function shuffle(array) {
-    console.log("Start shuffling...");
+
     var currentIndex = array.length,
         temporaryValue, randomIndex;
 
@@ -275,6 +273,37 @@ function shuffle(array) {
     return array;
 }
 
+function filterQuestionsIntoChapter(questionboject) {
+
+
+    var allChapters = [];
+    var sortedQuestions = {};
+
+    questionboject.forEach(function (question) {
+
+        if (!allChapters.includes(question.chapter)) {
+            allChapters.push(question.chapter);
+
+        }
+    });
+
+    allChapters.forEach(function (chapter) {
+        sortedQuestions[chapter] = [];
+    });
+
+
+    questionboject.forEach(function (question) {
+        sortedQuestions[question.chapter].push(question);
+
+    });
+
+    console.log(sortedQuestions);
+
+
+
+
+}
+
 
 var RequestQuestions = function () {
     $.ajax({
@@ -284,18 +313,17 @@ var RequestQuestions = function () {
         type: "POST",
         timeout: 3000,
         success: function (data) {
-            console.log(data);
             questionsObject = data;
             for (i = 0; i < data.length; i++) {
                 questionsObject[i] = JSON.parse(questionsObject[i]);
             }
+            filterQuestionsIntoChapter(questionsObject);
             totalQuestions = questionsObject.length;
-            console.log(questionsObject);
-            //console.log(questionsObject);
+
 
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            console.log("error");
+
             if (typeof console != "undefined") {
                 console.log(jqXHR.responseText);
                 console.log(textStatus, errorThrown);
