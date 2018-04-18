@@ -216,3 +216,9 @@ table tr:nth-child(even) {
 #difficulty a{
     font-size: 3rem;
 }
+
+#edit, #delete{
+    width: 60%;
+    height: auto;
+    align-content: center;
+}

@@ -220,12 +220,13 @@ function deleteQuestion($idQuestion)
         $stmt = $conn->prepare("DELETE FROM question WHERE idQuestion = :idquestion");
         $stmt->bindParam(':idquestion', $idQuestion);
         $stmt->execute();
-        deleteAsnwers($idQuestion);
     } catch (PDOException $e) {
         die($e->getMessage());
     }
+}
 
-function deleteAnswers($idQuestion){
+function deleteAnswer($idQuestion)
+{
     try {
         $servername = "localhost";
         $username = "root";
@@ -237,53 +238,55 @@ function deleteAnswers($idQuestion){
         $stmt = $conn->prepare("DELETE FROM answer WHERE idQuestion = :idquestion");
         $stmt->bindParam(':idquestion', $idQuestion);
         $stmt->execute();
+        deleteQuestion($idQuestion);
     } catch (PDOException $e) {
         die($e->getMessage());
     }
 }
 
 function editQuestion($newQuestion, $newChapter, $idQuestion)
-    {
-        try {
-            $servername = "localhost";
-            $username = "root";
-            $password = "";
-            $database = "cage";
+{
+    try {
+        $servername = "localhost";
+        $username = "root";
+        $password = "";
+        $database = "cage";
 
-            $conn = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
-            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $stmt = $conn->prepare("UPDATE question SET nameQuestion = :question, idChapter = :chapter WHERE idQuestion = :idQuestion");
-            $stmt->bindValue(':question', $newQuestion);
-            $stmt->bindValue(':chapter', $newChapter);
-            $stmt->bindValue(':idQuestion', $idQuestion);
-            $stmt->execute();
-        } catch (PDOException $e) {
-            die($e->getMessage());
-        }
-
+        $conn = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $stmt = $conn->prepare("UPDATE question SET nameQuestion = :question, idChapter = :chapter WHERE idQuestion = :idQuestion");
+        $stmt->bindValue(':question', $newQuestion);
+        $stmt->bindValue(':chapter', $newChapter);
+        $stmt->bindValue(':idQuestion', $idQuestion);
+        $stmt->execute();
+    } catch (PDOException $e) {
+        die($e->getMessage());
     }
 
-function editAnswers($newAnswer, $idAnswer)
-    {
-        try {
-            $servername = "localhost";
-            $username = "root";
-            $password = "";
-            $database = "cage";
+}
 
-            $conn = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
-            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $stmt = $conn->prepare("UPDATE answer SET nameAnswer = :answer, WHERE idAsnwer = :idAnswer");
-            $stmt->bindValue(':question', $newAnswer);
-            $stmt->bindValue(':idAnswer',$idAnswer);
-            $stmt->execute();
-        } catch (PDOException $e) {
-            die($e->getMessage());
-        }
+function editAnswers($newAnswer, $idAnswer)
+{
+    try {
+        $servername = "localhost";
+        $username = "root";
+        $password = "";
+        $database = "cage";
+
+        $conn = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $stmt = $conn->prepare("UPDATE answer SET nameAnswer = :answer, WHERE idAsnwer = :idAnswer");
+        $stmt->bindValue(':question', $newAnswer);
+        $stmt->bindValue(':idAnswer', $idAnswer);
+        $stmt->execute();
+    } catch (PDOException $e) {
+        die($e->getMessage());
     }
 }
 
-function getRightAnswerFromQuestion($idQuestion){
+
+function getRightAnswerFromQuestion($idQuestion)
+{
     try {
         $servername = "localhost";
         $username = "root";
@@ -303,7 +306,8 @@ function getRightAnswerFromQuestion($idQuestion){
     return $RightAnswer;
 }
 
-function getWrongAnswersFromQuestion($idQuestion){
+function getWrongAnswersFromQuestion($idQuestion)
+{
     try {
         $servername = "localhost";
         $username = "root";
@@ -321,3 +325,42 @@ function getWrongAnswersFromQuestion($idQuestion){
     }
     return $WrongAnswers;
 }
+function getQuestionById($idQuestion){
+    try {
+        $servername = "localhost";
+        $username = "root";
+        $password = "";
+        $database = "cage";
+
+        $conn = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $stmt = $conn->prepare("SELECT * FROM question WHERE idQuestion = :idQuestion");
+        $stmt->bindValue(':idQuestion', $idQuestion);
+        $stmt->execute();
+        $question = $stmt->fetchAll();
+
+    } catch (PDOException $e) {
+        die($e->getMessage());
+    }
+    return $question;
+}
+function getChapterById($idChapter){
+    try {
+        $servername = "localhost";
+        $username = "root";
+        $password = "";
+        $database = "cage";
+
+        $conn = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $stmt = $conn->prepare("SELECT * FROM chapter WHERE idChapter = :idChapter");
+        $stmt->bindValue(':idChapter', $idChapter);
+        $stmt->execute();
+        $chapter = $stmt->fetchAll();
+
+    } catch (PDOException $e) {
+        die($e->getMessage());
+    }
+    return $chapter;
+}
+
