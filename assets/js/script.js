@@ -1,17 +1,3 @@
-//IT Students:
-//Kenny Depecker, Timo Vergauwen, Louis Hansart, Jorden Deserrano(php man),
-//Matthias Carlier, Renzie Omaña, Robbe Vuylsteke, Jaan Buerms, Wout Bracke
-//Ward Adriaensen
-
-//Bussiness Students:
-//Marcel Mazik, Majdeline Yahyaoui Idrissi,Magdalena Rudawska, Pawel Adamczyk, Grzegorz Markowski,
-//Agnieszka Kocot,Natalia Lot,Marianna Macha,Dawid Fuchs, Wojtek Dorobisz, Oskar Bieron
-
-//MAKE SURE TO KEEP THE LOGO THE SAME!!!
-//SORRY FOR OUR SHITTY CODE!!!
-//STAY THE FUCK OUT OF MY DATABASE!!!
-//MAKE SURE TO CLICK THE LOGO MULTIPLE TIMES
-//28/04/2017
 var questionsObject;
 var correctAnswer;
 var currentQuestionIndex = 0;
@@ -19,10 +5,8 @@ var totalScore = 0;
 var counter = 0;
 var totalQuestions = 2;
 var timer = 0;
-
-//requesting questions not implemented
-
-var qObject = {};
+var numberOfQuestionsPerChapter;
+var numberOfChapters = 14;
 
 $(document).ready(function () {
     $(".nickname-panel .next").on("click", startGame);
@@ -39,7 +23,7 @@ var learnMore = function () {
 
 var askName = function () {
 
-    console.log($(this).attr("data-amount"));
+    numberOfQuestionsPerChapter = ($(this).attr("data-amount"));
     totalQuestions = $(this).attr("data-amount");
 
     $("#difficulty").fadeOut("fast", function () {
@@ -115,7 +99,7 @@ var startGame = function () {
 
     RequestQuestions();
 
-    $("#counter").text("1/"+totalQuestions);
+    $("#counter").text("1/" + numberOfChapters * numberOfQuestionsPerChapter);
 
 
     $(".nickname-panel").fadeOut("normal", function () {
@@ -202,9 +186,8 @@ var loadQuestion = function (givenQuestion) {
 
 var nextQuestion = function () {
 
-    $("#counter").text(currentQuestionIndex + 1 + "/" + totalQuestions);
-
-    if (currentQuestionIndex >= totalQuestions) {
+    $("#counter").text(currentQuestionIndex + 1 + "/" + numberOfChapters*numberOfQuestionsPerChapter);
+    if (currentQuestionIndex === totalQuestions) {
         $(".final-screen").fadeIn("normal");
         $("header").fadeOut("normal");
         $(".score").text(totalScore);
@@ -250,7 +233,7 @@ $(".nickname-panel .next").on("click", function () {
             $(".question-page").fadeIn("normal");
         }
     )
-})
+});
 
 $("#nickname").keyup(function () {
     $('.player-name').text($(this).val());
@@ -294,10 +277,11 @@ function shuffle(array) {
     return array;
 }
 
+
 function filterQuestionsIntoChapter(questionboject) {
 
-
     var allChapters = [];
+
     var sortedQuestions = {};
 
     questionboject.forEach(function (question) {
@@ -320,8 +304,31 @@ function filterQuestionsIntoChapter(questionboject) {
 
     console.log(sortedQuestions);
 
+    return sortedQuestions;
 
 
+}
+
+function pickAmmountOfQuestions(allQuestions) {
+
+    var currentAmmountOfQuestions=0;
+
+    questionsObject={};
+
+    for(var chapter in allQuestions){
+
+        for(var i=0;i<numberOfQuestionsPerChapter;i++){
+
+            console.log(chapter);
+            questionsObject[currentAmmountOfQuestions] =allQuestions[chapter][i];
+
+
+            currentAmmountOfQuestions++;
+        }
+
+    }
+
+    console.log(questionsObject);
 
 }
 
@@ -338,10 +345,10 @@ var RequestQuestions = function () {
             for (i = 0; i < data.length; i++) {
                 questionsObject[i] = JSON.parse(questionsObject[i]);
             }
-            filterQuestionsIntoChapter(questionsObject);
-            // totalQuestions = questionsObject.length;
-            totalQuestions = 1;
-
+            var allQuestions = filterQuestionsIntoChapter(questionsObject);
+            pickAmmountOfQuestions(allQuestions);
+            totalQuestions = Object.keys(questionsObject).length;
+    console.log(totalQuestions);
 
         },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -354,4 +361,4 @@ var RequestQuestions = function () {
         }
 
     });
-}
+};
