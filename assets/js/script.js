@@ -107,7 +107,7 @@ var startGame = function () {
         totalQuestions = questionsObject.length;
         console.log(questionsObject);
 
-        localforage.setItem(KEY_QUESTIONS, JSON.stringify(questionsObject)).then(function () {
+        localforage.setItem("KEY_QUESTIONS", JSON.stringify(questionsObject)).then(function () {
             console.log("cached " + totalQuestions + " questions");
     $("#counter").text("1/" + numberOfChapters * numberOfQuestionsPerChapter);
 
