@@ -16,17 +16,22 @@ var questionsObject;
 var correctAnswer;
 var currentQuestionIndex = 0;
 var totalScore = 0;
-var totalQuestions = 10;
+var counter = 0;
+var totalQuestions = 2;
+var timer = 0;
 
 //requesting questions not implemented
 
-$(document).ready(function () {
+var qObject = {};
 
-    $(".nickname-panel .next").on("click", startGame);
-    $("#difficulty a").on("click", askName);
-    $("#home").on("click", reset);
+ $(document).ready( function () {
+     $(".nickname-panel .next").on("click", startGame);
+     $("#difficulty a").on("click", askName);
+     $("#home").on("click", reset);
+ });
 
-});
+
+
 
 var askName = function () {
 
@@ -95,8 +100,13 @@ var finalGrade = function()
     if(otherTotal>0){
         $("#score-categories").append("Other " + otherCorrect + " / "+ otherTotal);
     }
+
+    //console.log(questionsObject);
 };
 
+var grade = function (rightWrong) {
+    questionsObject[currentQuestionIndex - 1].answerCorrect = rightWrong;
+}
 
 var startGame =function () {
 
@@ -117,8 +127,8 @@ var startGame =function () {
 var verifyQuestion = function (pickedAnswer) {
     console.log("checking " + pickedAnswer);
     $(".question-page").fadeOut("normal", function () {
-        console.log(pickedAnswer + '=' + correctAnswer);
-        console.log(pickedAnswer == correctAnswer);
+        //console.log(pickedAnswer + '=' + correctAnswer);
+        //console.log(pickedAnswer == correctAnswer);
         if (pickedAnswer === correctAnswer) {
             $("#success").fadeIn("normal");
         } else {
@@ -171,17 +181,17 @@ $(".home-page a").on("click", function () {
 
 var loadQuestion = function (givenQuestion) {
     var randomTable = [1, 2, 3, 4];
-    $("#question span").text(givenQuestion[0]);
-    console.log(givenQuestion);
-    //delete givenQuestion[0];
-    console.log(givenQuestion);
-    correctAnswer = givenQuestion[1];
-    console.log(givenQuestion[1]);
-    shuffle(randomTable);
-    $("#answer-one span").text(givenQuestion[randomTable[0]]);
-    $("#answer-two span").text(givenQuestion[randomTable[1]]);
-    $("#answer-three span").text(givenQuestion[randomTable[2]]);
-    $("#answer-four span").text(givenQuestion[randomTable[3]]);
+    $("#question span").text(givenQuestion['question']);
+    delete givenQuestion[0];
+    correctAnswer = givenQuestion.rightAnswer;
+    var allAnswers = [];
+    allAnswers.push(givenQuestion['rightAnswer']);
+    givenQuestion['wrongAnswers'].forEach(x => allAnswers.push(x));
+    shuffle(allAnswers);
+    $("#answer-one span").text([allAnswers[0]]);
+    $("#answer-two span").text(allAnswers[randomTable[1]]);
+    $("#answer-three span").text(allAnswers[randomTable[2]]);
+    $("#answer-four span").text(allAnswers[randomTable[3]]);
 
 };
 
@@ -195,9 +205,9 @@ var nextQuestion = function () {
         $(".score").text(totalScore);
     } else {
         $(".answer").removeClass("selectedAnswer");
-        currentQuestionIndex++;
         $(".question-page").fadeIn("normal");
         loadQuestion(questionsObject[currentQuestionIndex]);
+        currentQuestionIndex++;
     }
 };
 
@@ -206,20 +216,51 @@ $("a.next-succes").on("click", function () {
     totalScore++;
     $("#success").fadeOut("normal");
     console.log("next");
+    grade(true);
     nextQuestion();
+
 });
 
 
 $("a.next-false").on("click", function () {
     $("#failure").fadeOut("normal");
     console.log("next");
+    grade(false);
     nextQuestion();
+
+
 });
 
+$(".nickname-panel .next").on("click", function () {
+    $(".nickname-panel").fadeOut("normal", function () {
+        $("#time").fadeIn("normal");
+        $(".stop").fadeIn().css("display", "block");
+        loadQuestion(questionsObject[currentQuestionIndex]);
+        currentQuestionIndex++;
+        $(".question-page").fadeIn("normal");
+    }
+    )})
 
 $("#nickname").keyup(function () {
     $('.player-name').text($(this).val());
 });
+
+var totalSeconds = 0;
+
+function setTime() {
+    totalSeconds++;
+
+}
+
+function pad(val) {
+    var valString = val + "";
+    if (valString.length < 2) {
+        return "0" + valString;
+    } else {
+        return valString;
+    }
+}
+
 
 function shuffle(array) {
     console.log("Start shuffling...");
@@ -245,7 +286,7 @@ function shuffle(array) {
 
 var RequestQuestions = function () {
     $.ajax({
-        url: "script.php",
+        url: "questions.php",
         data: "action=question",
         dataType: "JSON",
         type: "POST",
@@ -256,6 +297,7 @@ var RequestQuestions = function () {
             for (i = 0; i < data.length; i++) {
                 questionsObject[i] = JSON.parse(questionsObject[i]);
             }
+            totalQuestions = questionsObject.length;
             console.log(questionsObject);
             //console.log(questionsObject);
 
