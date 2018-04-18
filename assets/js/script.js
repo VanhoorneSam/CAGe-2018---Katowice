@@ -102,7 +102,7 @@ var finalGrade = function () {
 };
 
 var grade = function (rightWrong) {
-    questionsObject[currentQuestionIndex - 1].answerCorrect = rightWrong;
+    questionsObject[currentQuestionIndex].answerCorrect = rightWrong;
 }
 
 var startGame = function () {
@@ -115,7 +115,7 @@ var startGame = function () {
     $(".nickname-panel").fadeOut("normal", function () {
 
         loadQuestion(questionsObject[currentQuestionIndex]);
-        currentQuestionIndex++;
+        //currentQuestionIndex++;
         $(".question-page").fadeIn("normal");
         $("#time").fadeIn("normal");
     });
@@ -197,21 +197,26 @@ var loadQuestion = function (givenQuestion) {
 var nextQuestion = function () {
 
     $("#counter").text(currentQuestionIndex + 1 + "/" + totalQuestions);
-    if (currentQuestionIndex === totalQuestions) {
+
+    if (currentQuestionIndex >= totalQuestions) {
         $(".final-screen").fadeIn("normal");
         $("header").fadeOut("normal");
         $(".score").text(totalScore);
     } else {
         $(".answer").removeClass("selectedAnswer");
         $(".question-page").fadeIn("normal");
+        console.log(questionsObject);
         loadQuestion(questionsObject[currentQuestionIndex]);
-        currentQuestionIndex++;
+
+        console.log(totalQuestions);
+        console.log(currentQuestionIndex);
     }
 };
 
 
 $("a.next-succes").on("click", function () {
     totalScore++;
+    currentQuestionIndex++;
     $("#success").fadeOut("normal");
 
     grade(true);
@@ -222,6 +227,7 @@ $("a.next-succes").on("click", function () {
 
 $("a.next-false").on("click", function () {
     $("#failure").fadeOut("normal");
+    currentQuestionIndex++;
     grade(false);
     nextQuestion();
 
@@ -232,8 +238,9 @@ $(".nickname-panel .next").on("click", function () {
     $(".nickname-panel").fadeOut("normal", function () {
             $("#time").fadeIn("normal");
             $(".stop").fadeIn().css("display", "block");
-            loadQuestion(questionsObject[currentQuestionIndex]);
-            currentQuestionIndex++;
+            //loadQuestion(questionsObject[currentQuestionIndex]);
+            nextQuestion();
+            //currentQuestionIndex++;
             $(".question-page").fadeIn("normal");
         }
     )
@@ -326,7 +333,8 @@ var RequestQuestions = function () {
                 questionsObject[i] = JSON.parse(questionsObject[i]);
             }
             filterQuestionsIntoChapter(questionsObject);
-            totalQuestions = questionsObject.length;
+            // totalQuestions = questionsObject.length;
+            totalQuestions = 2;
 
 
         },
