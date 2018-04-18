@@ -86,8 +86,7 @@ var finalGrade = function () {
 };
 
 var grade = function (rightWrong) {
-    questionsObject[currentQuestionIndex - 1].answerCorrect = rightWrong;
-    console.log(questionsObject);
+    questionsObject[currentQuestionIndex].answerCorrect = rightWrong;
 }
 
 var startGame = function () {
@@ -100,7 +99,7 @@ var startGame = function () {
     $(".nickname-panel").fadeOut("normal", function () {
 
         loadQuestion(questionsObject[currentQuestionIndex]);
-        currentQuestionIndex++;
+        //currentQuestionIndex++;
         $(".question-page").fadeIn("normal");
         $("#time").fadeIn("normal");
     });
@@ -189,14 +188,18 @@ var nextQuestion = function () {
     } else {
         $(".answer").removeClass("selectedAnswer");
         $(".question-page").fadeIn("normal");
+        console.log(questionsObject);
         loadQuestion(questionsObject[currentQuestionIndex]);
-        currentQuestionIndex++;
+
+        console.log(totalQuestions);
+        console.log(currentQuestionIndex);
     }
 };
 
 
 $("a.next-succes").on("click", function () {
     totalScore++;
+    currentQuestionIndex++;
     $("#success").fadeOut("normal");
 
     grade(true);
@@ -207,6 +210,7 @@ $("a.next-succes").on("click", function () {
 
 $("a.next-false").on("click", function () {
     $("#failure").fadeOut("normal");
+    currentQuestionIndex++;
     grade(false);
     nextQuestion();
 
@@ -217,8 +221,9 @@ $(".nickname-panel .next").on("click", function () {
     $(".nickname-panel").fadeOut("normal", function () {
             $("#time").fadeIn("normal");
             $(".stop").fadeIn().css("display", "block");
-            loadQuestion(questionsObject[currentQuestionIndex]);
-            currentQuestionIndex++;
+            //loadQuestion(questionsObject[currentQuestionIndex]);
+            nextQuestion();
+            //currentQuestionIndex++;
             $(".question-page").fadeIn("normal");
         }
     )
