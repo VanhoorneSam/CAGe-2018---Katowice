@@ -29,14 +29,6 @@ if (isset($_POST['delete'])) {
 
     echo('<form name="addQuestion" id="addQuestion" method="post" action="' . $_SERVER['PHP_SELF'] . '">');
 
-    /*echo('<label for="categorie">Categorie: </label>');
-    echo('<select id = "categorie" name = "categorie" >');
-    $categories = getAllCategories();
-    foreach ($categories as $categorie) {
-        echo('<option id="' . $categorie["idCategorie"] . '" name="' . $categorie["nameCategorie"] . '">');
-        echo($categorie["nameCategorie"]);
-        echo('</option>');
-    }*/
 
     echo('<label for="chapter" > Chapter: </label >');
     echo('<select id = "chapter" name = "chapter" >');
@@ -58,22 +50,25 @@ if (isset($_POST['delete'])) {
     echo('</select >');
 
     echo('<label for="question" > Question: </label >');
-    echo('<input type = "text" id = "question" name = "question" value="'.$nameQuestion.'" >');
+    echo('<input type = "text" id = "question" name = "question" value="' . $nameQuestion . '" >');
 
     echo('<label for="question" > Right answer: </label >');
-    echo('<input type = "text" id = "rightanswer" name = "rightanswer" value="'.$nameRightAnswer.'">');
+    echo('<input type = "text" id = "rightanswer" name = "rightanswer" value="' . $nameRightAnswer . '">');
 
 
     $countOfAnswers = 0;
-    foreach ($wrongAnswerArr as $wrongAnswer){
+    foreach ($wrongAnswerArr as $wrongAnswer) {
         echo('<label for="question" > Wrong answer: </label >');
-        echo('<input type = "text" id = "wronganswer1" name = "wronganswer'.$countOfAnswers.'" value="'.$wrongAnswer["nameAnswer"].'" >');
+        echo('<input type = "text" id = "wronganswer1" name = "wronganswer' . $countOfAnswers . '" value="' . $wrongAnswer["nameAnswer"] . '" >');
         $countOfAnswers++;
     }
 
     echo('<input type = "submit" name = "submit" >');
     echo('</form >');
 
+}else if (isset($_POST['submit'])){
+    var_dump(1);
+    $newChapter = $_POST['chapter'];
 }
 ?>
 
