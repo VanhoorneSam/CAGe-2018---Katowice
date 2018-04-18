@@ -103,8 +103,7 @@ fieldset {
 
 .difficulty{
     line-height: 14vh;
-    height: 14vh;
-    width: 14vh;
+    width: 25%;
     display: inline-block;
 }
 
@@ -176,7 +175,9 @@ fieldset {
 }
 
 .final-screen {
-    margin-top: 25vh;
+    width: 80%;
+    margin: auto;
+    margin-top: 15%;
 }
 
 .score {
@@ -214,7 +215,7 @@ table tr:nth-child(even) {
 }
 
 #difficulty a{
-    font-size: 3rem;
+    font-size: 6vh;
     margin-bottom: 1vh;
 }
 
@@ -223,4 +224,21 @@ table tr:nth-child(even) {
     margin: auto;
     margin-top: 1rem;
     text-align: justify;
+}
+
+#chapters{
+    margin: auto;
+    margin-top: 2rem;
+    width: 80%;
+}
+
+
+li{
+    margin-bottom: 1rem;
+    list-style-type: circle;
+}
+
+#learnMore{
+    text-decoration: none;
+    color: #ff9100;
 }
