@@ -28,7 +28,13 @@ $(document).ready(function () {
     $(".nickname-panel .next").on("click", startGame);
     $("#difficulty a").on("click", askName);
     $("#home").on("click", reset);
+    $(".again-button").on("click", reset);
+    $("#learnMore").on("click", learnMore)
 });
+
+var learnMore = function () {
+    $("#chapters").slideToggle("slow");
+}
 
 
 var askName = function () {
@@ -334,7 +340,7 @@ var RequestQuestions = function () {
             }
             filterQuestionsIntoChapter(questionsObject);
             // totalQuestions = questionsObject.length;
-            totalQuestions = 2;
+            totalQuestions = 1;
 
 
         },
