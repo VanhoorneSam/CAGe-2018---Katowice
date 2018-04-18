@@ -129,6 +129,8 @@ var verifyQuestion = function (pickedAnswer) {
 
 $(".answer span").on("click", function () {
 
+    event.preventDefault();
+
     if ($(this).parent().hasClass("selectedAnswer")) {
         console.log($(this).text());
         verifyQuestion($(this).text());
