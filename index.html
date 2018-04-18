@@ -16,7 +16,8 @@
     <h1 class="player-name">Player 1</h1>
     <!--<img id="time-icon" src="assets/images/timer.png">        <p id="time">20s</p>-->
     <p id="time" class="hidden">
-        <span id="counter">1</span>/20</p>
+        <span id="counter"></span>
+    </p>
 </header>
 <div class="container">
     <div class="home-page">
@@ -25,6 +26,14 @@
             <img id="clickMee" src="assets/images/play%20with%20me.png">
         </a>
         <img id="loadingGif" class="hidden" src="assets/images/loading.gif"></div>
+
+    <div id="welcome">
+        <p>Welcome to the Consumee Game! Your task, should you choose to accept it, is to work your way through the game
+            to test your consumer awareness skills. The questions are designed to test all aspects of consumer
+            experiences and the knowledge that comes with them. Good luck!
+        </p>
+
+    </div>
     <div class="question-page hidden">
         <div>
             <h2 class="question-title">Question</h2>
@@ -54,16 +63,16 @@
         </form>
     </div>
     <div class="nickname-panel hidden">
-        <input type="text" id="nickname" name="nickname" maxlength="10" placeholder="Enter a name">
+        <input type="text" id="nickname" name="nickname" maxlength="16" placeholder="Enter a name">
         <img class="next" src="assets/images/next.png"/>
     </div>
 
     <div class="hidden" id="difficulty">
         <h1>Choose a number of questions</h1>
-        <a href="#" data-amount="10" class="difficulty">10</a>
-        <a href="#" data-amount="25" class="difficulty">25</a>
-        <a href="#" data-amount="40" class="difficulty">40</a>
-        <a href="#" data-amount="50" class="difficulty">50</a>
+        <a href="#" data-amount="2" class="difficulty">Easy</a>
+        <a href="#" data-amount="3" class="difficulty">Medium</a>
+        <a href="#" data-amount="4" class="difficulty">Hard</a>
+        <!--<a href="#" data-amount="50" class="difficulty">Time Attack</a>-->
     </div>
 
     <div id="success" class="hidden">
@@ -84,18 +93,19 @@
             <span>
                     <img class="next" src="assets/images/next.png"/>
                 </span>
-            </a>
+        </a>
+    </div>
+    <div class="final-screen hidden">
+        <div id="score-categories">
+            <p>Consumption in Europe; General Characteristics and Consumer Awareness Importance <span
+                    id="score-consumption"></span></p>
+            <p>Companies’ Behaviour and Consumer Awareness Relevance <span id="score-companies"></span></p>
+            <p>Consumer Protection in Europe <span id="score-consumer"></span></p>
         </div>
-        <div class="final-screen hidden">
-            <div id="score-categories">
-                <p>Consumption in Europe; General Characteristics and Consumer Awareness Importance <span id="score-consumption"></span></p>
-                <p>Companies’ Behaviour and Consumer Awareness Relevance <span id="score-companies"></span></p>
-                <p>Consumer Protection in Europe <span id="score-consumer"></span></p>
-            </div>
-            <p class="score">0</p>
-            <a href="#" class="again">Final score
-                <span>
-                    <img class="again-button" src="assets/images/play%20with%20me.png" />
+        <p class="score">0</p>
+        <a href="#" class="again">Final score
+            <span>
+                    <img class="again-button" src="assets/images/play%20with%20me.png"/>
                 </span>
         </a>
     </div>

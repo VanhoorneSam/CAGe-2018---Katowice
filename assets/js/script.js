@@ -33,6 +33,9 @@ $(document).ready(function () {
 
 var askName = function () {
 
+    console.log($(this).attr("data-amount"));
+    totalQuestions = $(this).attr("data-amount");
+
     $("#difficulty").fadeOut("fast", function () {
         $(".nickname-panel").fadeIn("slow");
     })
@@ -106,6 +109,8 @@ var startGame = function () {
 
     RequestQuestions();
 
+    $("#counter").text("1/"+totalQuestions);
+
 
     $(".nickname-panel").fadeOut("normal", function () {
 
@@ -149,12 +154,15 @@ $(".answer span").on("click", function () {
 
 $(".home-page a").on("click", function () {
 
-
+    console.log("check");
+    $("#welcome").fadeOut(200);
     $(this).fadeOut("fast", function () {
+
 
         $(".home-page").fadeOut("fast", function () {
 
             $("#loadingGif").fadeIn("fast");
+
 
             $("#loadingGif").fadeOut("fast", function () {
                 $("#difficulty").fadeIn("normal");
@@ -188,7 +196,7 @@ var loadQuestion = function (givenQuestion) {
 
 var nextQuestion = function () {
 
-    $("#counter").text(currentQuestionIndex + 1);
+    $("#counter").text(currentQuestionIndex + 1 + "/" + totalQuestions);
     if (currentQuestionIndex === totalQuestions) {
         $(".final-screen").fadeIn("normal");
         $("header").fadeOut("normal");
