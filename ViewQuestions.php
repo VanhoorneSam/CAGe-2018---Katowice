@@ -17,24 +17,26 @@ if (isset($_POST['delete'])) {
 } else if (isset($_POST['edit'])) {
     $idQuestion = $_POST['edit'];
     $question = getQuestionById($idQuestion);
-    $nameQuestion = $question['nameQuestion'];
-    $chapter = getChapterById($question['idChapter']);
+    foreach ($question as $s) {
+        $nameQuestion = $s['nameQuestion'];
+        $idChapter = $s['idChapter'];
+    }
     $rightAnswerArr = getRightAnswerFromQuestion($idQuestion);
-    $nameRightAnswer = $rightAnswerArr['nameAnswer'];
+    foreach ($rightAnswerArr as $s) {
+        $nameRightAnswer = $s['nameAnswer'];
+    }
     $wrongAnswerArr = getWrongAnswersFromQuestion($idQuestion);
 
     echo('<form name="addQuestion" id="addQuestion" method="post" action="' . $_SERVER['PHP_SELF'] . '">');
-    echo('<label for="categorie">Categorie: </label>');
-    echo('<select id = "categorie" name = "categorie" >');
 
+    /*echo('<label for="categorie">Categorie: </label>');
+    echo('<select id = "categorie" name = "categorie" >');
     $categories = getAllCategories();
     foreach ($categories as $categorie) {
         echo('<option id="' . $categorie["idCategorie"] . '" name="' . $categorie["nameCategorie"] . '">');
         echo($categorie["nameCategorie"]);
         echo('</option>');
-    }
-
-    echo('</select >');
+    }*/
 
     echo('<label for="chapter" > Chapter: </label >');
     echo('<select id = "chapter" name = "chapter" >');
@@ -42,28 +44,35 @@ if (isset($_POST['delete'])) {
 
     $chapters = getAllChapters();
     foreach ($chapters as $chapter) {
-        echo('<option id="' . $chapter["idChapter"] . '" name="' . $chapter["idCategorie"] . '"value="' . $chapter["idChapter"] . '">');
-        echo($chapter["nameChapter"]);
-        echo('</option>');
+        if ($chapter["idChapter"] == $idChapter) {
+            echo('<option id="' . $chapter["idChapter"] . '" name="' . $chapter["idCategorie"] . '"value="' . $chapter["idChapter"] . '" selected ="selected">');
+            echo($chapter["nameChapter"]);
+            echo('</option>');
+        } else {
+            echo('<option id="' . $chapter["idChapter"] . '" name="' . $chapter["idCategorie"] . '"value="' . $chapter["idChapter"] . '">');
+            echo($chapter["nameChapter"]);
+            echo('</option>');
+        }
+
     }
     echo('</select >');
 
     echo('<label for="question" > Question: </label >');
-    echo('<input type = "text" id = "question" name = "question" >');
+    echo('<input type = "text" id = "question" name = "question" value="'.$nameQuestion.'" >');
 
     echo('<label for="question" > Right answer: </label >');
-    echo('<input type = "text" id = "rightanswer" name = "rightanswer" >');
-    echo('< label for="question" > Wrong answer: </label >');
-    echo('<input type = "text" id = "wronganswer1" name = "wronganswer1" >');
+    echo('<input type = "text" id = "rightanswer" name = "rightanswer" value="'.$nameRightAnswer.'">');
 
-    echo('<label for="question" > Wrong answer: </label >');
-    echo('<input type = "text" id = "wronganswer2" name = "wronganswer2" >');
 
-    echo('<label for="question" > Wrong answer: </label >');
-    echo('<input type = "text" id = "wronganswer3" name = "wronganswer3" >');
+    $countOfAnswers = 0;
+    foreach ($wrongAnswerArr as $wrongAnswer){
+        echo('<label for="question" > Wrong answer: </label >');
+        echo('<input type = "text" id = "wronganswer1" name = "wronganswer'.$countOfAnswers.'" value="'.$wrongAnswer["nameAnswer"].'" >');
+        $countOfAnswers++;
+    }
 
     echo('<input type = "submit" name = "submit" >');
-echo('</form >');
+    echo('</form >');
 
 }
 ?>
