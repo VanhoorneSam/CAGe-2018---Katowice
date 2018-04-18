@@ -93,6 +93,7 @@ var finalGrade = function () {
 
 var grade = function (rightWrong) {
     questionsObject[currentQuestionIndex].answerCorrect = rightWrong;
+    console.log(questionsObject);
 }
 
 var startGame = function () {
@@ -168,7 +169,7 @@ $(".answer span").on("click", function () {
     event.preventDefault();
 
     if ($(this).parent().hasClass("selectedAnswer")) {
-        console.log($(this).text());
+
         verifyQuestion($(this).text());
 
 
@@ -182,7 +183,7 @@ $(".answer span").on("click", function () {
 
 $(".home-page a").on("click", function () {
 
-    console.log("check");
+
     $("#welcome").fadeOut(200);
     $(this).fadeOut("fast", function () {
 
@@ -224,7 +225,7 @@ var loadQuestion = function (givenQuestion) {
 
 var nextQuestion = function () {
 
-    $("#counter").text(currentQuestionIndex + 1 + "/" + numberOfChapters*numberOfQuestionsPerChapter);
+    //$("#counter").text(currentQuestionIndex + 1 + "/" + totalQuestions);
     if (currentQuestionIndex === totalQuestions) {
         $(".final-screen").fadeIn("normal");
         $("header").fadeOut("normal");
@@ -232,21 +233,22 @@ var nextQuestion = function () {
     } else {
         $(".answer").removeClass("selectedAnswer");
         $(".question-page").fadeIn("normal");
-        console.log(questionsObject);
-        loadQuestion(questionsObject[currentQuestionIndex]);
 
-        console.log(totalQuestions);
-        console.log(currentQuestionIndex);
+        loadQuestion(questionsObject[currentQuestionIndex]);
+        $("#counter").text(currentQuestionIndex + 1 + "/" + totalQuestions);
+
+
     }
 };
 
 
 $("a.next-succes").on("click", function () {
     totalScore++;
+    grade(true);
     currentQuestionIndex++;
     $("#success").fadeOut("normal");
 
-    grade(true);
+
     nextQuestion();
 
 });
@@ -254,8 +256,9 @@ $("a.next-succes").on("click", function () {
 
 $("a.next-false").on("click", function () {
     $("#failure").fadeOut("normal");
-    currentQuestionIndex++;
     grade(false);
+    currentQuestionIndex++;
+
     nextQuestion();
 
 
@@ -343,7 +346,7 @@ function filterQuestionsIntoChapter(questionboject) {
 
     });
 
-    console.log(sortedQuestions);
+
 
     return sortedQuestions;
 
@@ -360,7 +363,7 @@ function pickAmmountOfQuestions(allQuestions) {
 
         for(var i=0;i<numberOfQuestionsPerChapter;i++){
 
-            console.log(chapter);
+
             questionsObject[currentAmmountOfQuestions] =allQuestions[chapter][i];
 
 
@@ -369,7 +372,7 @@ function pickAmmountOfQuestions(allQuestions) {
 
     }
 
-    console.log(questionsObject);
+
 
 }
 
