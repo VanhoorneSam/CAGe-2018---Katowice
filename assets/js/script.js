@@ -28,10 +28,10 @@ var learnMore = function () {
 
 var askName = function () {
 
-    if(($(this).attr("data-mode"))==1){
-        isTimeAttack=true;
+    if (($(this).attr("data-mode")) == 1) {
+        isTimeAttack = true;
     } else {
-        isTimeAttack=false;
+        isTimeAttack = false;
     }
     numberOfQuestionsPerChapter = ($(this).attr("data-amount"));
     totalQuestions = $(this).attr("data-amount");
@@ -66,16 +66,15 @@ var startGame = function () {
         pickAmmountOfQuestions(allQuestions);
         totalQuestions = Object.keys(questionsObject).length;
 
-        if (!isTimeAttack){
+        if (!isTimeAttack) {
 
-        localforage.setItem(KEY_QUESTIONS, JSON.stringify(data)).then(function () {
-            console.log("cached " + totalQuestions + " questions");
-            $("#counter").text("1/" + totalQuestions);
-        });
+            localforage.setItem(KEY_QUESTIONS, JSON.stringify(data)).then(function () {
+                console.log("cached " + totalQuestions + " questions");
+                $("#counter").text("1/" + totalQuestions);
+            });
         } else {
             $("#counter").text(timeAttackTime);
         }
-
         fadeOutNicknamePanel();
     }
 
@@ -102,7 +101,6 @@ var startGame = function () {
 function fadeOutNicknamePanel() {
 
     $(".nickname-panel").fadeOut("normal", function () {
-
         loadQuestion(questionsObject[currentQuestionIndex]);
         //currentQuestionIndex++;
         $(".question-page").fadeIn("normal");
@@ -185,26 +183,15 @@ var loadQuestion = function (givenQuestion) {
     correctAnswer = givenQuestion.rightAnswer;
     var allAnswers = [];
     allAnswers.push(givenQuestion['rightAnswer']);
-
     givenQuestion['wrongAnswers'].forEach(x => allAnswers.push(x));
-
     shuffleArray(allAnswers);
-
     var answerDiv = $(".answers");
-
     answerDiv.empty();
-
     allAnswers.forEach(q => {
         answerDiv.append(`<a href="#" class="answer">
         <span>${q}</span>
             </a>`)
     });
-
-};
-
-var generateHTMLQuestion = function (questions) {
-
-
 };
 
 var renderScore = function () {
@@ -223,26 +210,24 @@ var renderScore = function () {
 
 
 var nextQuestion = function () {
-
     //$("#counter").text(currentQuestionIndex + 1 + "/" + totalQuestions);
-    if (currentQuestionIndex === totalQuestions || isTimeAttack && timeAttackTime<=0) {
+    if (currentQuestionIndex === totalQuestions || isTimeAttack && timeAttackTime <= 0) {
         $(".final-screen").fadeIn("normal");
         $("header").fadeOut("normal");
         $(".score").text(totalScore);
-        if(!isTimeAttack)
-        {
+        if (!isTimeAttack) {
             $("#learnMore").removeClass("hidden");
             renderScore();
         } else {
             $("#learnMore").addClass("hidden");
-
         }
+        $(".answers").empty();
     } else {
         $(".answer").removeClass("selectedAnswer");
         $(".question-page").fadeIn("normal");
-
+        $(".answers").empty();
         loadQuestion(questionsObject[currentQuestionIndex]);
-        if(!isTimeAttack){
+        if (!isTimeAttack) {
             $("#counter").text(currentQuestionIndex + 1 + "/" + totalQuestions);
         }
 
@@ -265,7 +250,7 @@ $("a.next-succes").on("click", function () {
     grade(true);
     currentQuestionIndex++;
     $("#success").fadeOut("normal", function () {
-        nextQuestion()
+        nextQuestion();
     });
 });
 
@@ -273,7 +258,7 @@ $("a.next-false").on("click", function () {
     grade(false);
     currentQuestionIndex++;
     $("#failure").fadeOut("normal", function () {
-        nextQuestion()
+        nextQuestion();
     });
 });
 
@@ -285,16 +270,15 @@ $("#nickname").keyup(function () {
 
 //////////TIMER
 
-var timer = setInterval(function(){
-    if(isTimeAttack)
-    {
+var timer = setInterval(function () {
+    if (isTimeAttack) {
         timeAttackTime--;
         $("#counter").text(timeAttackTime);
-        if(timeAttackTime <= 0)
+        if (timeAttackTime <= 0)
             clearInterval(timer);
     }
 
-},1000);
+}, 1000);
 
 /////
 
@@ -384,7 +368,7 @@ function pickAmmountOfQuestions(allQuestions) {
     var currentAmmountOfQuestions = 0;
     questionsObject = {};
 
-    if(isTimeAttack){
+    if (isTimeAttack) {
         numberOfQuestionsPerChapter = 10;
     }
 

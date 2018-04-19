@@ -1,6 +1,6 @@
 //This is the service worker with the Cache-first network
 
-var CACHE = 'pwabuilder-precache';
+var CACHE = 'pwabuilder-precache_v3';
 var precacheFiles = [
     /* Add an array of files to precache for your app */
     "/index.html",
@@ -22,9 +22,9 @@ var precacheFiles = [
 ];
 
 //Install stage sets up the cache-array to configure pre-cache content
-self.addEventListener('install', function(evt) {
+self.addEventListener('install', function (evt) {
     console.log('The service worker is being installed.');
-    evt.waitUntil(precache().then(function() {
+    evt.waitUntil(precache().then(function () {
             console.log('[ServiceWorker] Skip waiting on install');
             return self.skipWaiting();
 
@@ -34,32 +34,33 @@ self.addEventListener('install', function(evt) {
 
 
 //allow sw to control of current page
-self.addEventListener('activate', function(event) {
+self.addEventListener('activate', function (event) {
     console.log('[ServiceWorker] Claiming clients for current page');
     return self.clients.claim();
 
 });
 
-self.addEventListener('fetch', function(evt) {
-    console.log('The service worker is serving the asset.'+ evt.request.url);
+self.addEventListener('fetch', function (evt) {
+    console.log('The service worker is serving the asset.' + evt.request.url);
+    console.log(evt.request.url);
+    if (evt.request.url.trim().toLowerCase().indexOf("phpmyadmin") === -1) {
+        if (evt.request.method === "POST") {
 
-    if(evt.request.method === "POST"){
 
+            evt.waitUntil(
+                fromServer(evt.request).catch(error => {
+                    if (evt.request.url.indexOf("questions.php") !== -1) {
+                        return sendMessageToAllClients("questions post failed");
+                    }
+                    return sendMessageToAllClients(error)
+                })
+            );
+            // return; // todo communicate with script.js so it knows to show an error
+        } else {
 
-        evt.waitUntil(
-
-            fromServer(evt.request).catch(error => {
-                if(evt.request.url.indexOf("questions.php") !== -1){
-                    return sendMessageToAllClients("questions post failed");
-                }
-                return sendMessageToAllClients(error)
-            })
-        )
-        // return; // todo communicate with script.js so it knows to show an error
-    } else {
-
-        evt.respondWith(fromCache(evt.request).catch(fromServer(evt.request)));
-        evt.waitUntil(update(evt.request));
+            evt.respondWith(fromCache(evt.request).catch(fromServer(evt.request)));
+            evt.waitUntil(update(evt.request));
+        }
     }
 });
 
@@ -91,12 +92,14 @@ function update(request) {
     });
 }
 
-function fromServer(request){
+function fromServer(request) {
     //this is the fallback if it is not in the cahche to go to the server and get it
-    return fetch(request).then(function(response){ return response})
+    return fetch(request).then(function (response) {
+        return response
+    })
 }
 
-function sendMessageToAllClients(msg){
+function sendMessageToAllClients(msg) {
     clients.matchAll().then(clients => {
         clients.forEach(client => {
             send_message_to_client(client, msg).then(m => console.log("SW Received Message: " + m));
@@ -104,14 +107,14 @@ function sendMessageToAllClients(msg){
     })
 }
 
-function send_message_to_client(client, msg){
-    return new Promise(function(resolve, reject){
+function send_message_to_client(client, msg) {
+    return new Promise(function (resolve, reject) {
         var msg_chan = new MessageChannel();
 
-        msg_chan.port1.onmessage = function(event){
-            if(event.data.error){
+        msg_chan.port1.onmessage = function (event) {
+            if (event.data.error) {
                 reject(event.data.error);
-            }else{
+            } else {
                 resolve(event.data);
             }
         };
