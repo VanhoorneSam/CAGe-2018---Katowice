@@ -47,7 +47,7 @@ var startGame = function () {
     if(nick.length>0){    $('.player-name').text($("#nickname").val());
     }
 
-    function success(data){
+    function success(data) {
         console.log(data);
         questionsObject = data;
         for (i = 0; i < data.length; i++) {
@@ -217,7 +217,8 @@ $("a.next-succes").on("click", function () {
 $("a.next-false").on("click", function () {
     grade(false);
     currentQuestionIndex++;
-    $("#failure").fadeOut("normal", function(){nextQuestion()});
+    nextQuestion();
+
 });
 
 
@@ -303,6 +304,7 @@ function filterQuestionsIntoChapter(questionboject) {
 
 
     return sortedQuestions;
+
 }
 
 function pickAmmountOfQuestions(allQuestions) {
