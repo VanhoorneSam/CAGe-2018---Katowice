@@ -197,20 +197,13 @@ $("a.next-succes").on("click", function () {
     totalScore++;
     grade(true);
     currentQuestionIndex++;
-    $("#success").fadeOut("normal");
-
-
-    nextQuestion();
-
+    $("#success").fadeOut("normal", function(){nextQuestion()});
 });
 
-
 $("a.next-false").on("click", function () {
-    $("#failure").fadeOut("normal");
     grade(false);
     currentQuestionIndex++;
-    nextQuestion();
-
+    $("#failure").fadeOut("normal", function(){nextQuestion()});
 });
 
 
