@@ -16,20 +16,13 @@ include_once("functions.php");
 if (isset($_POST['submit'])) {
     $question = zuiverData($_POST["question"]);
     $chapter = $_POST["chapter"];
-    $nameAnswerRight = zuiverData($_POST["rightanswer"]);
-    $nameAnswerWrong1 = zuiverData($_POST["wronganswer1"]);
-    $nameAnswerWrong2 = zuiverData($_POST["wronganswer2"]);
-    $nameAnswerWrong3 = zuiverData($_POST["wronganswer3"]);
+    $answerArr = array(zuiverData($_POST["rightanswer"]), zuiverData($_POST["wronganswer1"]), zuiverData($_POST["wronganswer2"]), zuiverData($_POST["wronganswer3"]),);
+
     try {
-        echo $question;
-        addQuestion($question, $chapter, $nameAnswerRight, $nameAnswerWrong1, $nameAnswerWrong2, $nameAnswerWrong3);
-
+        addQuestion($question, $chapter, $answerArr);
         echo("Question succesfully added!");
-
-    }catch(Exception $e){
-
-        echo("Failed to add question!/n".$e );
-
+    } catch (Exception $e) {
+        echo("Failed to add question!/n" . $e);
     }
 
 }
@@ -59,13 +52,12 @@ if (isset($_POST['submit'])) {
 
             $chapters = getAllChapters();
             foreach ($chapters as $chapter) {
-                echo('<option id="' . $chapter["idChapter"] . '" name="' . $chapter["idCategorie"] .'"value="'. $chapter["idChapter"].'">');
+                echo('<option id="' . $chapter["idChapter"] . '" name="' . $chapter["idCategorie"] . '"value="' . $chapter["idChapter"] . '">');
                 echo($chapter["nameChapter"]);
                 echo('</option>');
             }
             ?>
         </select>
-
         <ul id="errors" class="errors">
         </ul>
 
