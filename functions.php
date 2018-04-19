@@ -14,12 +14,8 @@ function getAllCategories()
     global $config;
 
     try {
-        $servername = "localhost";
-        $username = "root";
-        $password = "";
-        $database = "cage";
 
-        $conn = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
+        $conn = new PDO("mysql:host=" . $config["host"] . ";dbname=" . $config["database"], $config["username"], $config["password"]);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $stmt = $conn->prepare("SELECT * FROM categorie");
         $stmt->execute();

@@ -9,6 +9,7 @@ $(document).ready(function(){
 });
 
 function validateQuestion(e){
+
     var question = cleanInput($("#addQuestion #question").val());
     var rightAnswer = cleanInput($("#addQuestion #rightanswer").val());
     var wrongAnswer1 = cleanInput($("#addQuestion #wronganswer1").val());
@@ -33,7 +34,7 @@ function showErrors(errors){
         if(typeof(error) !== "undefined"){
             console.log(error);
 
-            $("#" + error.field);
+            $("#errors").append("<li>" + error.message + "</li>");
         }
     })
 }
