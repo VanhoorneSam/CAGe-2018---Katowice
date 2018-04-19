@@ -9,6 +9,7 @@ var numberOfQuestionsPerChapter;
 var numberOfChapters = 14;
 var KEY_QUESTIONS = "questions";
 var totalSeconds = 0;
+var allChapters = [];
 
 $(document).ready(function () {
     $(".nickname-panel .next").on("click", startGame);
@@ -185,6 +186,20 @@ var generateHTMLQuestion = function (questions) {
 
 };
 
+var renderScore = function () {
+    var solutionobject = countCorrectQuestionsPerChapter();
+
+    for(var i=0; i<allChapters.length; i++){
+        var currentchapter = allChapters[i];
+        var score = solutionobject[currentchapter];
+
+        $("#scoreperchapter").append("<li>"+ currentchapter +" "+ score +"/"+numberOfQuestionsPerChapter+"</li>");
+
+    }
+
+
+};
+
 
 var nextQuestion = function () {
 
@@ -193,8 +208,7 @@ var nextQuestion = function () {
         $(".final-screen").fadeIn("normal");
         $("header").fadeOut("normal");
         $(".score").text(totalScore);
-        countCorrectQuestionsPerChapter();
-        console.log(questionsObject);
+        renderScore();
     } else {
         $(".answer").removeClass("selectedAnswer");
         $(".question-page").fadeIn("normal");
@@ -207,17 +221,14 @@ var nextQuestion = function () {
 };
 var countCorrectQuestionsPerChapter = function () {
     var correctAnswer = {};
+    allChapters.forEach(x=>correctAnswer[x]=0);
     for(var question in questionsObject){
         console.log(questionsObject[question]["answerCorrect"]);
         if(questionsObject[question]["answerCorrect"] === true){
-            if(questionsObject[question]["chapter"] in correctAnswer){
                 correctAnswer[questionsObject[question]["chapter"]]++;
-            } else {
-                correctAnswer[questionsObject[question]["chapter"]]=1;
-            }
         }
     }
-    console.log(correctAnswer);
+    return correctAnswer;
 }
 
 $("a.next-succes").on("click", function () {
@@ -293,7 +304,7 @@ function shuffleObject(sourceArray) {
 
 function filterQuestionsIntoChapter(questionboject) {
 
-    var allChapters = [];
+
 
     var sortedQuestions = {};
 
