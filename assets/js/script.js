@@ -115,7 +115,7 @@ var verifyQuestion = function (pickedAnswer) {
 
 ///Controll scheme, can do with some cleaning up
 
-$(".answer span").on("mousedown", function (event) {
+$(".answers").on("mousedown", ".answer span" ,  function (event) {
 
     event.preventDefault();
 
@@ -126,10 +126,10 @@ $(".answer span").on("mousedown", function (event) {
 
 });
 
-$(".answer span").on("mouseup", function (event) {
+$(".answers").on("mouseup", ".answer span" , function (event) {
 
     event.preventDefault();
-
+    console.log("mouseup on a question");
     if ($(this).parent().hasClass("selectedAnswer"))
     {
         verifyQuestion($(this).text());
@@ -241,8 +241,7 @@ $("a.next-succes").on("click", function () {
 $("a.next-false").on("click", function () {
     grade(false);
     currentQuestionIndex++;
-    nextQuestion();
-
+    $("#failure").fadeOut("normal", function(){nextQuestion()});
 });
 
 
