@@ -206,7 +206,7 @@ var renderScore = function () {
         var currentchapter = allChapters[i];
         var score = solutionobject[currentchapter];
 
-        $("#scoreperchapter").append("<li>"+ currentchapter +" "+ score +"/"+numberOfQuestionsPerChapter+"</li>");
+        $("#scoreperchapter").append("<li>"+ currentchapter +"<span class='chapterScore'>"+ score +"/"+numberOfQuestionsPerChapter+"</span></li>");
 
     }
 
