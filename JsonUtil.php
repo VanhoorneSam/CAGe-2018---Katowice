@@ -43,6 +43,8 @@ class JsonUtil{
                 $wrong[] = $row['nameAnswer'];
             }
         }
+
+
 //        $merged = (object) array_merge((array) $questions, (array) $Correct, (array) $wrong);
         $merged = array(
             'question' => $questions,
@@ -51,7 +53,6 @@ class JsonUtil{
             'chapter' =>$chapterName,
             'category' => $categoryName
         );
-        return json_encode($merged);
 
 
         return json_encode($merged);

@@ -22,10 +22,11 @@ $config = include($path_to_credentials);
 function getShuffledQuestions($count){
     global $db;
 
-    $array = range(1, $db->getQuestionCount());
+    $questionCount = $db->getQuestionCount();
+    $array = range(1, $questionCount);
     shuffle($array);
     $finalArray = array();
-    for ($i = 0; $i < $count; $i++) {
+    for ($i = 0; $i < $questionCount; $i++) {
 
         $nummer = $array[$i];
         $object = $db->getNthQuestionNewFormat($nummer);
