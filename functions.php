@@ -6,8 +6,8 @@
  * Time: 10:44
  */
 
-$path_to_credentials =  __DIR__ . "/credentials.php";
-$config = include($path_to_credentials);
+$path_to_credentials = __DIR__ . "/credentials.php";
+$config = include("$path_to_credentials");
 
 function getAllCategories()
 {
@@ -117,7 +117,7 @@ function getAllQuestions()
     return ($questions);
 }
 
-function addQuestion($question, $chapter, $nameAnswerRight, $nameAnswerWrong1, $nameAnswerWrong2, $nameAnswerWrong3)
+function addQuestion($question, $chapter, $answerArr)
 {
     global $config;
     try {
@@ -127,7 +127,7 @@ function addQuestion($question, $chapter, $nameAnswerRight, $nameAnswerWrong1, $
         $stmt->bindValue(':question', $question);
         $stmt->bindValue(':chapter', $chapter);
         $stmt->execute();
-        addAnswer($nameAnswerRight, $nameAnswerWrong1, $nameAnswerWrong2, $nameAnswerWrong3);
+        addAnswer($answerArr);
     } catch (PDOException $e) {
         die($e->getMessage());
     }
@@ -149,7 +149,7 @@ function getLastQuestionId()
     return ($lastQuestionId);
 }
 
-function addAnswer($nameAnswerRight, $nameAnswerWrong1, $nameAnswerWrong2, $nameAnswerWrong3)
+function addAnswer($answerArr)
 {
     global $config;
     try {
@@ -161,12 +161,23 @@ function addAnswer($nameAnswerRight, $nameAnswerWrong1, $nameAnswerWrong2, $name
 
         $conn = new PDO("mysql:host=" . $config["host"] . ";dbname=" . $config["database"], $config["username"], $config["password"]);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $stmt = $conn->prepare("INSERT INTO answer(idQuestion, nameAnswer, IsCorrect) VALUES(:idQuestion, :nameAnswerRight, 1),(:idQuestion, :nameAnswerWrong1, 0),(:idQuestion, :nameAnswerWrong2, 0),(:idQuestion, :nameAnswerWrong3, 0)");
-        $stmt->bindValue(':idQuestion', $lastQuestionId);
-        $stmt->bindValue(':nameAnswerRight', $nameAnswerRight);
-        $stmt->bindValue(':nameAnswerWrong1', $nameAnswerWrong1);
-        $stmt->bindValue(':nameAnswerWrong2', $nameAnswerWrong2);
-        $stmt->bindValue(':nameAnswerWrong3', $nameAnswerWrong3);
+        $index = 1;
+        $answerArr = array_filter($answerArr);
+        $toPrepare = "INSERT INTO answer(idQuestion, nameAnswer, IsCorrect) VALUES(:idQuestion, :nameAnswerRight, 1)";
+        do{
+            $toPrepare .= ",(:idQuestion,:nameAnswerWrong" . $index . ',0)';
+            $index++;
+        }while($index<count($answerArr));
+        $index = 1;
+        $stmt = $conn->prepare($toPrepare);
+
+        do{
+            $placeholder = ":nameAnswerWrong" . $index;
+            $stmt->bindValue($placeholder, $answerArr[$index]);
+            $index++;
+        }while($index<count($answerArr));
+        $stmt->bindValue(":idQuestion", $lastQuestionId);
+        $stmt->bindValue(":nameAnswerRight", $answerArr[0]);
         $stmt->execute();
     } catch (PDOException $e) {
         die($e->getMessage());
@@ -187,7 +198,7 @@ function deleteQuestion($idQuestion)
     }
 }
 
-function deleteAnswer($idQuestion)
+function deleteAnswerByIdQuestion($idQuestion)
 {
     global $config;
     try {
@@ -197,6 +208,21 @@ function deleteAnswer($idQuestion)
         $stmt->bindParam(':idquestion', $idQuestion);
         $stmt->execute();
         deleteQuestion($idQuestion);
+    } catch (PDOException $e) {
+        die($e->getMessage());
+    }
+}
+
+function deleteAnswerByIdAnswer($idAnswer)
+{
+    global $config;
+    try {
+
+        $conn = new PDO("mysql:host=" . $config["host"] . ";dbname=" . $config["database"], $config["username"], $config["password"]);
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $stmt = $conn->prepare("DELETE FROM answer WHERE idAnswer = :idanswer");
+        $stmt->bindParam(':idanswer', $idAnswer);
+        $stmt->execute();
     } catch (PDOException $e) {
         die($e->getMessage());
     }
@@ -219,9 +245,12 @@ function editQuestion($newQuestion, $newChapter, $idQuestion)
 
 }
 
-function editAnswers($newAnswer,$idAnswer)
+function editAnswers($newAnswer, $idAnswer)
 {
     global $config;
+    if (empty($newAnswer)) {
+        deleteAnswerByIdAnswer($idAnswer);
+    }
     try {
         $conn = new PDO("mysql:host=" . $config["host"] . ";dbname=" . $config["database"], $config["username"], $config["password"]);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -234,14 +263,14 @@ function editAnswers($newAnswer,$idAnswer)
     }
 }
 
-function editAllAnswers($newAnswersArr, $idAnswerArr){
+function editAllAnswers($newAnswersArr, $idAnswerArr)
+{
     $index = 0;
-    foreach ($idAnswerArr as $id){
-        editAnswers($newAnswersArr[$index],$id);
+    foreach ($idAnswerArr as $id) {
+        editAnswers($newAnswersArr[$index], $id);
         $index++;
     }
 }
-
 
 
 function getRightAnswerFromQuestion($idQuestion)
@@ -276,7 +305,9 @@ function getWrongAnswersFromQuestion($idQuestion)
     }
     return $WrongAnswers;
 }
-function getQuestionById($idQuestion){
+
+function getQuestionById($idQuestion)
+{
     global $config;
     try {
         $conn = new PDO("mysql:host=" . $config["host"] . ";dbname=" . $config["database"], $config["username"], $config["password"]);
@@ -291,7 +322,9 @@ function getQuestionById($idQuestion){
     }
     return $question;
 }
-function getChapterById($idChapter){
+
+function getChapterById($idChapter)
+{
     global $config;
     try {
         $conn = new PDO("mysql:host=" . $config["host"] . ";dbname=" . $config["database"], $config["username"], $config["password"]);

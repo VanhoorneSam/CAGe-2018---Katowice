@@ -10,4 +10,15 @@ return array(
     'database' => 'cage',
     'username' => 'root',
     'password' => ''
+
 );
+
+// server config
+// return array(
+//    'host' => 'mysqlhost2',
+//    'database' => 'appcage',
+//    'username' => 'appcage',
+//    'password' => 'ouQuai5oocee'
+// );
+
+
