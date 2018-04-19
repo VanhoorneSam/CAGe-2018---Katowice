@@ -173,19 +173,19 @@ var loadQuestion = function (givenQuestion) {
 
 };
 
-// var renderScore = function () {
-//     var solutionobject = iansfunction();
-//
-//     for(var i=0; i<allChapters.length; i++){
-//         var currentchapter = allChapters[i];
-//         var score = solutionobject[currentchapter];
-//
-//         $("#scoreperchapter").append("<li>"+ currentchapter +" "+ score +"/"+numberOfQuestionsPerChapter+"</li>");
-//
-//     }
-//
-//
-// };
+var renderScore = function () {
+    var solutionobject = countCorrectQuestionsPerChapter();
+
+    for(var i=0; i<allChapters.length; i++){
+        var currentchapter = allChapters[i];
+        var score = solutionobject[currentchapter];
+
+        $("#scoreperchapter").append("<li>"+ currentchapter +" "+ score +"/"+numberOfQuestionsPerChapter+"</li>");
+
+    }
+
+
+};
 
 
 var nextQuestion = function () {
@@ -195,7 +195,7 @@ var nextQuestion = function () {
         $(".final-screen").fadeIn("normal");
         $("header").fadeOut("normal");
         $(".score").text(totalScore);
-        //TODO hier call naar functie die score li in ul stopt
+        renderScore();
     } else {
         $(".answer").removeClass("selectedAnswer");
         $(".question-page").fadeIn("normal");
@@ -208,17 +208,14 @@ var nextQuestion = function () {
 };
 var countCorrectQuestionsPerChapter = function () {
     var correctAnswer = {};
+    allChapters.forEach(x=>correctAnswer[x]=0);
     for(var question in questionsObject){
         console.log(questionsObject[question]["answerCorrect"]);
         if(questionsObject[question]["answerCorrect"] === true){
-            if(questionsObject[question]["chapter"] in correctAnswer){
                 correctAnswer[questionsObject[question]["chapter"]]++;
-            } else {
-                correctAnswer[questionsObject[question]["chapter"]]=1;
-            }
         }
     }
-    console.log(correctAnswer);
+    return correctAnswer;
 }
 
 $("a.next-succes").on("click", function () {
