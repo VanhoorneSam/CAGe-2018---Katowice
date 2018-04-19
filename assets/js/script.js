@@ -230,7 +230,7 @@ $("a.next-succes").on("click", function () {
 $("a.next-false").on("click", function () {
     grade(false);
     currentQuestionIndex++;
-    nextQuestion();
+    $("#failure").fadeOut("normal", function(){nextQuestion()});
 
 });
 
