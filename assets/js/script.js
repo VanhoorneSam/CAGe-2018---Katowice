@@ -7,7 +7,7 @@ var totalQuestions = 2;
 var timer = 0;
 var numberOfQuestionsPerChapter;
 var numberOfChapters = 14;
-
+var KEY_QUESTIONS = "questions";
 $(document).ready(function () {
     $(".nickname-panel .next").on("click", startGame);
     $("#difficulty a").on("click", askName);
@@ -98,18 +98,29 @@ var grade = function (rightWrong) {
 
 var startGame = function () {
 
+    // function (data) {
+    //     questionsObject = data;
+    //     for (i = 0; i < data.length; i++) {
+    //         questionsObject[i] = JSON.parse(questionsObject[i]);
+    //     }
+    //     filterQuestionsIntoChapter(questionsObject);
+    //     totalQuestions = questionsObject.length;
+    //
+    //
+    // },
     function success(data){
         console.log(data);
         questionsObject = data;
         for (i = 0; i < data.length; i++) {
             questionsObject[i] = JSON.parse(questionsObject[i]);
         }
-        totalQuestions = questionsObject.length;
-        console.log(questionsObject);
+        var allQuestions = filterQuestionsIntoChapter(questionsObject);
+        pickAmmountOfQuestions(allQuestions);
+        totalQuestions = Object.keys(questionsObject).length;
 
-        localforage.setItem(KEY_QUESTIONS, JSON.stringify(questionsObject)).then(function () {
+        localforage.setItem("KEY_QUESTIONS", JSON.stringify(questionsObject)).then(function () {
             console.log("cached " + totalQuestions + " questions");
-    $("#counter").text("1/" + numberOfChapters * numberOfQuestionsPerChapter);
+    $("#counter").text("1/" + totalQuestions);
 
         })
 
