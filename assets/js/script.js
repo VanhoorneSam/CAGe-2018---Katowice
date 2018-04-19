@@ -1,34 +1,33 @@
-//IT Students:
-//Kenny Depecker, Timo Vergauwen, Louis Hansart, Jorden Deserrano(php man),
-//Matthias Carlier, Renzie Omaña, Robbe Vuylsteke, Jaan Buerms, Wout Bracke
-//Ward Adriaensen
-
-//Bussiness Students:
-//Marcel Mazik, Majdeline Yahyaoui Idrissi,Magdalena Rudawska, Pawel Adamczyk, Grzegorz Markowski,
-//Agnieszka Kocot,Natalia Lot,Marianna Macha,Dawid Fuchs, Wojtek Dorobisz, Oskar Bieron
-
-//MAKE SURE TO KEEP THE LOGO THE SAME!!!
-//SORRY FOR OUR SHITTY CODE!!!
-//STAY THE FUCK OUT OF MY DATABASE!!!
-//MAKE SURE TO CLICK THE LOGO MULTIPLE TIMES
-//28/04/2017
 var questionsObject;
 var correctAnswer;
 var currentQuestionIndex = 0;
 var totalScore = 0;
-var totalQuestions = 1;
-
-//requesting questions not implemented
+var counter = 0;
+var totalQuestions = 2;
+var timer = 0;
+var numberOfQuestionsPerChapter;
+var numberOfChapters = 14;
+var KEY_QUESTIONS = "questions";
+var totalSeconds = 0;
+var allChapters = [];
 
 $(document).ready(function () {
-
     $(".nickname-panel .next").on("click", startGame);
     $("#difficulty a").on("click", askName);
     $("#home").on("click", reset);
-
+    $(".again-button").on("click", reset);
+    $("#learnMore").on("click", learnMore)
 });
 
+var learnMore = function () {
+    $("#chapters").slideToggle("slow");
+};
+
+
 var askName = function () {
+
+    numberOfQuestionsPerChapter = ($(this).attr("data-amount"));
+    totalQuestions = $(this).attr("data-amount");
 
     $("#difficulty").fadeOut("fast", function () {
         $(".nickname-panel").fadeIn("slow");
@@ -39,95 +38,89 @@ var reset = function () {
     location.reload();
 };
 
-var finalGrade = function()
-{
-    console.log("going to the final grading");
-    var consumptionTotal=0;
-    var consumptionCorrect=0;
-    var companiesTotal=0;
-    var companiesCorrect=0;
-    var consumersTotal=0;
-    var consumersCorrect=0;
-    var otherTotal = 0;
-    var otherCorrect=0;
 
+var grade = function (rightWrong) {
+    questionsObject[currentQuestionIndex].answerCorrect = rightWrong;
+}
 
-    // category names will likely change once the backend is done
+var startGame = function () {
+    var nick = ($("#nickname").val());
+    if(nick.length>0){    $('.player-name').text($("#nickname").val());
+    }
 
-
-    for ( var i = 0; i < currentQuestionIndex; i++) {
-
-        switch(questionsObject[i].category) {
-            case "Consumption in Europe; General Characteristics and Consumer Awareness Importance":
-                consumptionTotal++;
-                if(questionsObject[i].correct_answer){
-                    consumptionCorrect++;
-                }
-                break;
-            case "Companies’ Behaviour and Consumer Awareness Relevance":
-                companiesTotal++;
-                if(questionsObject[i].correct_answer){
-                    companiesCorrect++;
-                }
-                break;
-            case "Consumer Protection in Europe":
-                consumersTotal++;
-                if(questionsObject[i].correct_answer){
-                    consumersCorrect++;
-                }
-                break;
-            default:
-                otherTotal++;
-                if(questionsObject[i].correct_answer){
-                    otherCorrect++;
-                }
-                break;
+    function success(data) {
+        console.log(data);
+        questionsObject = data;
+        for (i = 0; i < data.length; i++) {
+            questionsObject[i] = JSON.parse(questionsObject[i]);
         }
-    }
-    $("#score-consumption").text(consumptionCorrect +" / "+ consumptionTotal);
-    $("#score-companies").text(companiesCorrect +" / "+ companiesTotal);
-    $("#score-consumer").text(consumersCorrect +" / "+ consumersTotal);
+        var allQuestions = filterQuestionsIntoChapter(questionsObject);
+        pickAmmountOfQuestions(allQuestions);
+        totalQuestions = Object.keys(questionsObject).length;
 
-    $(".score").text(totalScore);
-    if(otherTotal>0){
-        $("#score-categories").append("Other " + otherCorrect + " / "+ otherTotal);
+        localforage.setItem(KEY_QUESTIONS, JSON.stringify(questionsObject)).then(function () {
+            console.log("cached " + totalQuestions + " questions");
+            $("#counter").text("1/" + totalQuestions);
+
+        });
+
+
+        fadeOutNicknamePanel();
     }
+
+    function error(jqXHR, textStatus, errorThrown) {
+        console.error("error");
+        console.log(textStatus);
+        if (typeof console != "undefined") {
+            console.log(jqXHR.responseText);
+            console.log(textStatus, errorThrown);
+        }
+
+        localforage.getItem("questions").then(q => {
+            questionsObject = JSON.parse(q);
+            totalQuestions = questionsObject.length;
+
+            fadeOutNicknamePanel();
+        })
+    }
+
+    RequestQuestions(success, error);
 };
 
-
-var startGame =function () {
-
-    RequestQuestions();
-
+function fadeOutNicknamePanel() {
 
     $(".nickname-panel").fadeOut("normal", function () {
-        console.log(questionsObject);
+
         loadQuestion(questionsObject[currentQuestionIndex]);
-        currentQuestionIndex++;
+        //currentQuestionIndex++;
         $(".question-page").fadeIn("normal");
         $("#time").fadeIn("normal");
     });
 }
 
+
 var verifyQuestion = function (pickedAnswer) {
-    console.log("checking " + pickedAnswer);
+
     $(".question-page").fadeOut("normal", function () {
-        console.log(pickedAnswer + '=' + correctAnswer);
-        console.log(pickedAnswer == correctAnswer);
+
         if (pickedAnswer === correctAnswer) {
             $("#success").fadeIn("normal");
+            grade(true);
         } else {
             $("#failure").fadeIn("normal");
+            grade(false);
         }
     });
 
 };
 
 
-$(".answer span").on("click", function () {
+$(".answers").on("click", ".answer span", function (event) {
+
+    event.preventDefault();
 
     if ($(this).parent().hasClass("selectedAnswer")) {
-        console.log($(this).text());
+
         verifyQuestion($(this).text());
 
 
@@ -141,12 +134,15 @@ $(".answer span").on("click", function () {
 
 $(".home-page a").on("click", function () {
 
-    console.log("check");
+
+    $("#welcome").fadeOut(200);
     $(this).fadeOut("fast", function () {
+
 
         $(".home-page").fadeOut("fast", function () {
 
             $("#loadingGif").fadeIn("fast");
+
 
             $("#loadingGif").fadeOut("fast", function () {
                 $("#difficulty").fadeIn("normal");
@@ -162,50 +158,91 @@ $(".home-page a").on("click", function () {
 
 
 var loadQuestion = function (givenQuestion) {
-    var randomTable = [1, 2, 3, 4];
-    $("#question span").text(givenQuestion[0]);
     console.log(givenQuestion);
-    //delete givenQuestion[0];
-    console.log(givenQuestion);
-    correctAnswer = givenQuestion[1];
-    console.log(givenQuestion[1]);
-    shuffle(randomTable);
-    $("#answer-one span").text(givenQuestion[randomTable[0]]);
-    $("#answer-two span").text(givenQuestion[randomTable[1]]);
-    $("#answer-three span").text(givenQuestion[randomTable[2]]);
-    $("#answer-four span").text(givenQuestion[randomTable[3]]);
+    $("#question span").text(givenQuestion['question']);
+    delete givenQuestion[0];
+    correctAnswer = givenQuestion.rightAnswer;
+    var allAnswers = [];
+    allAnswers.push(givenQuestion['rightAnswer']);
+
+    givenQuestion['wrongAnswers'].forEach(x => allAnswers.push(x));
+
+    shuffleArray(allAnswers);
+
+    var answerDiv = $(".answers");
+
+    answerDiv.empty();
+
+    allAnswers.forEach(q => {
+        answerDiv.append(`<a href="#" class="answer">
+        <span>${q}</span>
+            </a>`)
+    });
+
+};
+
+var generateHTMLQuestion = function (questions) {
+
+
+};
+
+var renderScore = function () {
+    var solutionobject = countCorrectQuestionsPerChapter();
+
+    for(var i=0; i<allChapters.length; i++){
+        var currentchapter = allChapters[i];
+        var score = solutionobject[currentchapter];
+
+        $("#scoreperchapter").append("<li>"+ currentchapter +" "+ score +"/"+numberOfQuestionsPerChapter+"</li>");
+
+    }
+
 
 };
 
 
 var nextQuestion = function () {
 
-    $("#counter").text(currentQuestionIndex + 1);
+    //$("#counter").text(currentQuestionIndex + 1 + "/" + totalQuestions);
     if (currentQuestionIndex === totalQuestions) {
         $(".final-screen").fadeIn("normal");
         $("header").fadeOut("normal");
         $(".score").text(totalScore);
+        renderScore();
     } else {
         $(".answer").removeClass("selectedAnswer");
-        currentQuestionIndex++;
         $(".question-page").fadeIn("normal");
+
         loadQuestion(questionsObject[currentQuestionIndex]);
+        $("#counter").text(currentQuestionIndex + 1 + "/" + totalQuestions);
+
+
     }
 };
-
+var countCorrectQuestionsPerChapter = function () {
+    var correctAnswer = {};
+    allChapters.forEach(x=>correctAnswer[x]=0);
+    for(var question in questionsObject){
+        console.log(questionsObject[question]["answerCorrect"]);
+        if(questionsObject[question]["answerCorrect"] === true){
+                correctAnswer[questionsObject[question]["chapter"]]++;
+        }
+    }
+    return correctAnswer;
+}
 
 $("a.next-succes").on("click", function () {
     totalScore++;
-    $("#success").fadeOut("normal");
-    console.log("next");
-    nextQuestion();
+    grade(true);
+    currentQuestionIndex++;
+    $("#success").fadeOut("normal", function(){nextQuestion()});
 });
 
-
 $("a.next-false").on("click", function () {
-    $("#failure").fadeOut("normal");
-    console.log("next");
-    nextQuestion();
+    grade(false);
+    currentQuestionIndex++;
+    $("#failure").fadeOut("normal", function(){nextQuestion()});
+
 });
 
 
@@ -213,12 +250,32 @@ $("#nickname").keyup(function () {
     $('.player-name').text($(this).val());
 });
 
-function shuffle(array) {
-    console.log("Start shuffling...");
+
+function setTime() {
+    totalSeconds++;
+
+}
+
+function getQuestionsNetworkFirst() {
+
+}
+
+function pad(val) {
+    var valString = val + "";
+    if (valString.length < 2) {
+        return "0" + valString;
+    } else {
+        return valString;
+    }
+}
+
+
+function shuffleArray(array) {
+
     var currentIndex = array.length,
         temporaryValue, randomIndex;
 
-    // While there remain elements to shuffle...
+    // While there remain elements to shuffleArray...
     while (0 !== currentIndex) {
 
         // Pick a remaining element...
@@ -233,33 +290,77 @@ function shuffle(array) {
 
     return array;
 }
+function shuffleObject(sourceArray) {
+    for (var i = 0; i < Object.keys(sourceArray).length - 1; i++) {
+        var j = i + Math.floor(Math.random() * (Object.keys(sourceArray).length - i));
+
+        var temp = sourceArray[j];
+        sourceArray[j] = sourceArray[i];
+        sourceArray[i] = temp;
+    }
+    return sourceArray;
+}
 
 
-var RequestQuestions = function () {
+function filterQuestionsIntoChapter(questionboject) {
+
+
+
+    var sortedQuestions = {};
+
+    questionboject.forEach(function (question) {
+
+        if (!allChapters.includes(question.chapter)) {
+            allChapters.push(question.chapter);
+
+        }
+    });
+
+    allChapters.forEach(function (chapter) {
+        sortedQuestions[chapter] = [];
+    });
+
+
+    questionboject.forEach(function (question) {
+        sortedQuestions[question.chapter].push(question);
+
+    });
+
+
+    return sortedQuestions;
+
+}
+
+function pickAmmountOfQuestions(allQuestions) {
+
+    var currentAmmountOfQuestions = 0;
+
+    questionsObject = {};
+
+    for (var chapter in allQuestions) {
+
+        for (var i = 0; i < numberOfQuestionsPerChapter; i++) {
+
+
+            questionsObject[currentAmmountOfQuestions] = allQuestions[chapter][i];
+
+
+            currentAmmountOfQuestions++;
+        }
+
+    }
+    shuffleObject(questionsObject);
+
+}
+
+var RequestQuestions = function (success, error) {
     $.ajax({
-        url: "script.php",
+        url: "questions.php",
         data: "action=question",
         dataType: "JSON",
         type: "POST",
         timeout: 3000,
-        success: function (data) {
-            console.log(data);
-            questionsObject = data;
-            for (i = 0; i < data.length; i++) {
-                questionsObject[i] = JSON.parse(questionsObject[i]);
-            }
-            console.log(questionsObject);
-            //console.log(questionsObject);
-
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.log("error");
-            if (typeof console != "undefined") {
-                console.log(jqXHR.responseText);
-                console.log(textStatus, errorThrown);
-            }
-
-        }
-
+        success: success,
+        error: error
     });
-}
+};

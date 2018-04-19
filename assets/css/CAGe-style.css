@@ -29,7 +29,7 @@ h1{
 }
 
 .nickname-panel {
-    margin-top: 20%;
+    margin-top: 15%;
 }
 
 #nickname {
@@ -64,7 +64,7 @@ fieldset {
 }
 
 .question-title {
-    margin: 12vh auto 0 auto;
+    margin: 2vh auto 0 auto;
     font-size: xx-large;
     width: 50vw;
     border-bottom: 1px whitesmoke solid;
@@ -103,8 +103,7 @@ fieldset {
 
 .difficulty{
     line-height: 14vh;
-    height: 14vh;
-    width: 14vh;
+    width: 25%;
     display: inline-block;
 }
 
@@ -153,12 +152,12 @@ fieldset {
     height: auto;
 }
 
-.home-page {
-    margin-top: 25vh;
-}
+
 
 #logo {
-    width: 250px;
+    width: 200px;
+    margin-top: 8vh;
+    margin-bottom: 2vh;
 }
 
 #loadingGif {
@@ -169,14 +168,16 @@ fieldset {
 }
 
 #clickMee {
-    margin-top: 40px;
-    width: 250px;
+    margin-top: 10vh;
+    width: 30vh;
     display: block;
     margin: auto;
 }
 
 .final-screen {
-    margin-top: 25vh;
+    width: 80%;
+    margin: auto;
+    margin-top: 15%;
 }
 
 .score {
@@ -205,7 +206,7 @@ table tr:nth-child(even) {
 }
 
 #home{
-    margin: 0.6rem 2rem 0rem 2rem;
+    margin: 0.6rem 0.2rem 0rem 1rem;
     fill: #ff9100;
 }
 
@@ -214,7 +215,8 @@ table tr:nth-child(even) {
 }
 
 #difficulty a{
-    font-size: 3rem;
+    font-size: 6vh;
+    margin-bottom: 1vh;
 }
 
 #edit, #delete{
@@ -266,4 +268,27 @@ table tr:nth-child(even) {
 
 .errors{
     color: #ff0033;
+}
+#welcome{
+    width: 80%;
+    margin: auto;
+    margin-top: 1rem;
+    text-align: justify;
+}
+
+#chapters{
+    margin: auto;
+    margin-top: 2rem;
+    width: 80%;
+}
+
+
+li{
+    margin-bottom: 1rem;
+    list-style-type: circle;
+}
+
+#learnMore{
+    text-decoration: none;
+    color: #ff9100;
 }
