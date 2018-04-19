@@ -234,7 +234,7 @@ var nextQuestion = function () {
     if (currentQuestionIndex === totalQuestions || isTimeAttack && timeAttackTime<=0) {
         $(".final-screen").fadeIn("normal");
         $("header").fadeOut("normal");
-        $(".score").text(totalScore);
+        $(".score").text(totalScore + "/" + totalQuestions);
         if(!isTimeAttack)
         {
             $("#learnMore").removeClass("hidden");
