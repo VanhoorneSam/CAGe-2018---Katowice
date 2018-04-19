@@ -252,7 +252,6 @@ var nextQuestion = function () {
             $("#counter").text(currentQuestionIndex + 1 + "/" + totalQuestions);
         }
 
-
     }
 };
 var countCorrectQuestionsPerChapter = function () {
