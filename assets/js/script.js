@@ -18,8 +18,28 @@ $(document).ready(function () {
     $("#difficulty a").on("click", askName);
     $("#home").on("click", reset);
     $(".again-button").on("click", reset);
-    $("#learnMore").on("click", learnMore)
+    $("#learnMore").on("click", learnMore);
+    $("#classroom").on("click", showClassroomElements);
+    $(".scoreboard").on("click", showScoreBoard);
+    $(".next").on("click", checkInput)
 });
+
+var checkInput = function () {
+    var characterBlacklistRegex = /’/g;
+
+    var nickname = $("#nickname").val();
+    nickname.replace(characterBlacklistRegex, "'");
+
+};
+
+var showScoreBoard = function () {
+    $("#scoreboard").slideToggle("slow");
+};
+
+var showClassroomElements = function () {
+    $(".gamepin").show();
+    $(".scoreboard").removeClass("hidden");
+};
 
 var learnMore = function () {
     $("#chapters").slideToggle("slow");
@@ -51,6 +71,9 @@ var grade = function (rightWrong) {
 };
 
 var startGame = function () {
+
+
+
     var nick = ($("#nickname").val());
     if (nick.length > 0) {
         $('.player-name').text($("#nickname").val());
@@ -208,11 +231,6 @@ var loadQuestion = function (givenQuestion) {
 
 };
 
-var generateHTMLQuestion = function (questions) {
-
-
-};
-
 var renderScore = function () {
     var solutionobject = countCorrectQuestionsPerChapter();
 
@@ -362,7 +380,7 @@ function filterQuestionsIntoChapter(questionboject) {
             allChapters.push(question.chapter);
         }
     });
-
+    console.log(allChapters);
     allChapters.forEach(function (chapter) {
         sortedQuestions[chapter] = [];
     });

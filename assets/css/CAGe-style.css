@@ -48,6 +48,23 @@ h1{
     display: inline;
 }
 
+.gamepin{
+    width: 80%;
+    font-size: xx-large;
+    padding: 30px;
+    border: 1px #FF9100 solid;
+    background: none;
+    color: whitesmoke;
+    margin-bottom: 2rem;
+}
+
+.scoreboard{
+    text-decoration: none;
+    color: #ff9100;
+    margin-top: 2rem;
+    display: block;
+}
+
 #time {
     position: absolute;
     top: 5vh;
@@ -108,7 +125,6 @@ fieldset {
 
 .difficulty{
     line-height: 14vh;
-    width: 25%;
     display: inline-block;
 }
 
@@ -220,7 +236,7 @@ table tr:nth-child(even) {
 }
 
 #difficulty a{
-    font-size: 6vh;
+    font-size: 8vh;
     margin-bottom: 1vh;
 }
 
@@ -301,5 +317,14 @@ li{
     font-weight: bolder;
     display: block;
     margin-top: 1rem;
+    color: #ff9100;
+}
+
+table{
+    margin: 2rem auto;
+    width:80%;
+}
+
+th{
     color: #ff9100;
 }
