@@ -40,8 +40,7 @@ var reset = function () {
 
 var grade = function (rightWrong) {
     questionsObject[currentQuestionIndex].answerCorrect = rightWrong;
-    console.log(questionsObject);
-};
+}
 
 var startGame = function () {
     var nick = ($("#nickname").val());
@@ -181,6 +180,8 @@ var nextQuestion = function () {
         $(".final-screen").fadeIn("normal");
         $("header").fadeOut("normal");
         $(".score").text(totalScore);
+        countCorrectQuestionsPerChapter();
+        console.log(questionsObject);
     } else {
         $(".answer").removeClass("selectedAnswer");
         $(".question-page").fadeIn("normal");
@@ -191,7 +192,20 @@ var nextQuestion = function () {
 
     }
 };
-
+var countCorrectQuestionsPerChapter = function () {
+    var correctAnswer = {};
+    for(var question in questionsObject){
+        console.log(questionsObject[question]["answerCorrect"]);
+        if(questionsObject[question]["answerCorrect"] === true){
+            if(questionsObject[question]["chapter"] in correctAnswer){
+                correctAnswer[questionsObject[question]["chapter"]]++;
+            } else {
+                correctAnswer[questionsObject[question]["chapter"]]=1;
+            }
+        }
+    }
+    console.log(correctAnswer);
+}
 
 $("a.next-succes").on("click", function () {
     totalScore++;
@@ -289,7 +303,6 @@ function filterQuestionsIntoChapter(questionboject) {
 
 
     return sortedQuestions;
-
 }
 
 function pickAmmountOfQuestions(allQuestions) {
