@@ -8,6 +8,8 @@ var timer = 0;
 var numberOfQuestionsPerChapter;
 var numberOfChapters = 14;
 var KEY_QUESTIONS = "questions";
+var totalSeconds = 0;
+
 $(document).ready(function () {
     $(".nickname-panel .next").on("click", startGame);
     $("#difficulty a").on("click", askName);
@@ -35,61 +37,6 @@ var reset = function () {
     location.reload();
 };
 
-var finalGrade = function () {
-
-    var consumptionTotal = 0;
-    var consumptionCorrect = 0;
-    var companiesTotal = 0;
-    var companiesCorrect = 0;
-    var consumersTotal = 0;
-    var consumersCorrect = 0;
-    var otherTotal = 0;
-    var otherCorrect = 0;
-
-
-    // category names will likely change once the backend is done
-
-
-    for (var i = 0; i < currentQuestionIndex; i++) {
-
-        switch (questionsObject[i].category) {
-            case "Consumption in Europe; General Characteristics and Consumer Awareness Importance":
-                consumptionTotal++;
-                if (questionsObject[i].correct_answer) {
-                    consumptionCorrect++;
-                }
-                break;
-            case "Companies’ Behaviour and Consumer Awareness Relevance":
-                companiesTotal++;
-                if (questionsObject[i].correct_answer) {
-                    companiesCorrect++;
-                }
-                break;
-            case "Consumer Protection in Europe":
-                consumersTotal++;
-                if (questionsObject[i].correct_answer) {
-                    consumersCorrect++;
-                }
-                break;
-            default:
-                otherTotal++;
-                if (questionsObject[i].correct_answer) {
-                    otherCorrect++;
-                }
-                break;
-        }
-    }
-    $("#score-consumption").text(consumptionCorrect + " / " + consumptionTotal);
-    $("#score-companies").text(companiesCorrect + " / " + companiesTotal);
-    $("#score-consumer").text(consumersCorrect + " / " + consumersTotal);
-
-    $(".score").text(totalScore);
-    if (otherTotal > 0) {
-        $("#score-categories").append("Other " + otherCorrect + " / " + otherTotal);
-    }
-
-
-};
 
 var grade = function (rightWrong) {
     questionsObject[currentQuestionIndex].answerCorrect = rightWrong;
@@ -100,16 +47,7 @@ var startGame = function () {
     var nick = ($("#nickname").val());
     if(nick.length>0){    $('.player-name').text($("#nickname").val());
     }
-    // function (data) {
-    //     questionsObject = data;
-    //     for (i = 0; i < data.length; i++) {
-    //         questionsObject[i] = JSON.parse(questionsObject[i]);
-    //     }
-    //     filterQuestionsIntoChapter(questionsObject);
-    //     totalQuestions = questionsObject.length;
-    //
-    //
-    // },
+
     function success(data){
         console.log(data);
         questionsObject = data;
@@ -122,7 +60,7 @@ var startGame = function () {
 
         localforage.setItem("KEY_QUESTIONS", JSON.stringify(questionsObject)).then(function () {
             console.log("cached " + totalQuestions + " questions");
-    $("#counter").text("1/" + totalQuestions);
+            $("#counter").text("1/" + totalQuestions);
 
         });
 
@@ -130,7 +68,7 @@ var startGame = function () {
         fadeOutNicknamePanel();
     }
 
-    function error(jqXHR, textStatus, errorThrown){
+    function error(jqXHR, textStatus, errorThrown) {
         console.error("error");
         console.log(textStatus);
         if (typeof console != "undefined") {
@@ -147,9 +85,9 @@ var startGame = function () {
     }
 
     RequestQuestions(success, error);
-}
+};
 
-function fadeOutNicknamePanel(){
+function fadeOutNicknamePanel() {
 
     $(".nickname-panel").fadeOut("normal", function () {
 
@@ -271,35 +209,22 @@ $("a.next-false").on("click", function () {
     $("#failure").fadeOut("normal");
     grade(false);
     currentQuestionIndex++;
-
     nextQuestion();
-
 
 });
 
-// TODO update function in startGame
-// $(".nickname-panel .next").on("click", function () {
-//     $(".nickname-panel").fadeOut("normal", function () {
-//         $("#time").fadeIn("normal");
-//         $(".stop").fadeIn().css("display", "block");
-//         loadQuestion(questionsObject[currentQuestionIndex]);
-//         currentQuestionIndex++;
-//         $(".question-page").fadeIn("normal");
-//     }
-//     )})
 
 $("#nickname").keyup(function () {
     $('.player-name').text($(this).val());
 });
 
-var totalSeconds = 0;
 
 function setTime() {
     totalSeconds++;
 
 }
 
-function getQuestionsNetworkFirst(){
+function getQuestionsNetworkFirst() {
 
 }
 
@@ -368,26 +293,24 @@ function filterQuestionsIntoChapter(questionboject) {
         sortedQuestions[question.chapter].push(question);
 
     });
-    console.log(allChapters);
 
 
     return sortedQuestions;
-
 
 }
 
 function pickAmmountOfQuestions(allQuestions) {
 
-    var currentAmmountOfQuestions=0;
+    var currentAmmountOfQuestions = 0;
 
-    questionsObject={};
+    questionsObject = {};
 
-    for(var chapter in allQuestions){
+    for (var chapter in allQuestions) {
 
-        for(var i=0;i<numberOfQuestionsPerChapter;i++){
+        for (var i = 0; i < numberOfQuestionsPerChapter; i++) {
 
 
-            questionsObject[currentAmmountOfQuestions] =allQuestions[chapter][i];
+            questionsObject[currentAmmountOfQuestions] = allQuestions[chapter][i];
 
 
             currentAmmountOfQuestions++;
