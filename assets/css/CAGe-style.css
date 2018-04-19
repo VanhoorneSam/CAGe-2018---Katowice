@@ -70,6 +70,11 @@ fieldset {
     border-bottom: 1px whitesmoke solid;
 }
 
+#question{
+    color: #ff9100;
+    margin: 1rem;
+}
+
 #addQuestion textarea, #addQuestion input[type="text"] {
     font-size: XX-large;
     width: 90%;
@@ -92,7 +97,7 @@ fieldset {
     height: 14vh;
     margin-left: auto;
     margin-right: auto;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     font-size: large;
     border-radius: 10px;
     padding-left: 10px;
