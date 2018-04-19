@@ -1,23 +1,13 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: kevin
- * Date: 4/18/2018
- * Time: 11:46 AM
+    this file contains the format for the credentials config file, DO NOT STORE THE ACTUAL CREDNTIALS HERE!
+ *  create ../credentials.php with the actual credentials and config
  */
 
 
 return array(
     'host' => 'localhost',
     'database' => 'cage',
-    'username' => 'consumee',
-    'password' => 'consumee'
+    'username' => 'cageuser',
+    'password' => 'cageuser'
 );
-
-// server config
-// return array(
-//    'host' => 'mysqlhost2',
-//    'database' => 'appcage',
-//    'username' => 'appcage',
-//    'password' => 'ouQuai5oocee'
-// );
