@@ -57,7 +57,7 @@ var startGame = function () {
         pickAmmountOfQuestions(allQuestions);
         totalQuestions = Object.keys(questionsObject).length;
 
-        localforage.setItem("KEY_QUESTIONS", JSON.stringify(questionsObject)).then(function () {
+        localforage.setItem(KEY_QUESTIONS, JSON.stringify(questionsObject)).then(function () {
             console.log("cached " + totalQuestions + " questions");
             $("#counter").text("1/" + totalQuestions);
 
@@ -114,7 +114,7 @@ var verifyQuestion = function (pickedAnswer) {
 };
 
 
-$(".answer span").on("click", function (event) {
+$(".answers").on("click", ".answer span", function (event) {
 
     event.preventDefault();
 
@@ -157,18 +157,31 @@ $(".home-page a").on("click", function () {
 
 
 var loadQuestion = function (givenQuestion) {
-    var randomTable = [1, 2, 3, 4];
+    console.log(givenQuestion);
     $("#question span").text(givenQuestion['question']);
     delete givenQuestion[0];
     correctAnswer = givenQuestion.rightAnswer;
     var allAnswers = [];
     allAnswers.push(givenQuestion['rightAnswer']);
+
     givenQuestion['wrongAnswers'].forEach(x => allAnswers.push(x));
+
     shuffleArray(allAnswers);
-    $("#answer-one span").text([allAnswers[0]]);
-    $("#answer-two span").text(allAnswers[randomTable[1]]);
-    $("#answer-three span").text(allAnswers[randomTable[2]]);
-    $("#answer-four span").text(allAnswers[randomTable[3]]);
+
+    var answerDiv = $(".answers");
+
+    answerDiv.empty();
+
+    allAnswers.forEach(q => {
+        answerDiv.append(`<a href="#" class="answer">
+        <span>${q}</span>
+            </a>`)
+    });
+
+};
+
+var generateHTMLQuestion = function (questions) {
+
 
 };
 
