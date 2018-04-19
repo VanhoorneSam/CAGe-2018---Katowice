@@ -68,7 +68,7 @@ if (isset($_POST['delete'])) {
     echo('<div id="newAnswerDiv">');
     echo('</div>');
     echo('<input type="text" name="idAnswers" value="' . base64_encode(serialize($idAnswerArr)) . '" class="hidden">');
-    echo('<input type="button" id="ansbutton" name="addAns" value="Add a new answer" onclick="makeAnswerBox(' . $countOfAnswers . ')">');
+    //echo('<input type="button" id="ansbutton" name="addAns" value="Add a new answer" onclick="makeAnswerBox(' . $countOfAnswers . ')">');
     echo('<input type = "submit" name = "submit" value="Save">');
     echo('</form >');
 
