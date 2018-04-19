@@ -164,18 +164,18 @@ function addAnswer($answerArr)
         $index = 1;
         $answerArr = array_filter($answerArr);
         $toPrepare = "INSERT INTO answer(idQuestion, nameAnswer, IsCorrect) VALUES(:idQuestion, :nameAnswerRight, 1)";
-        foreach ($answerArr as $a) {
+        do{
             $toPrepare .= ",(:idQuestion,:nameAnswerWrong" . $index . ',0)';
             $index++;
-        }
+        }while($index<count($answerArr));
         $index = 1;
         $stmt = $conn->prepare($toPrepare);
 
-        foreach ($answerArr as $a) {
+        do{
             $placeholder = ":nameAnswerWrong" . $index;
-            $stmt->bindValue($placeholder, $a);
+            $stmt->bindValue($placeholder, $answerArr[$index]);
             $index++;
-        }
+        }while($index<count($answerArr));
         $stmt->bindValue(":idQuestion", $lastQuestionId);
         $stmt->bindValue(":nameAnswerRight", $answerArr[0]);
         $stmt->execute();
@@ -215,13 +215,10 @@ function deleteAnswerByIdQuestion($idQuestion)
 
 function deleteAnswerByIdAnswer($idAnswer)
 {
+    global $config;
     try {
-        $servername = "localhost";
-        $username = "root";
-        $password = "";
-        $database = "cage";
 
-        $conn = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
+        $conn = new PDO("mysql:host=" . $config["host"] . ";dbname=" . $config["database"], $config["username"], $config["password"]);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $stmt = $conn->prepare("DELETE FROM answer WHERE idAnswer = :idanswer");
         $stmt->bindParam(':idanswer', $idAnswer);
