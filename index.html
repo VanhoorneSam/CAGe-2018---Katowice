@@ -51,16 +51,20 @@
             </fieldset>
         </form>
     </div>
-    <div class="nickname-panel hidden">
+    <form class="nickname-panel hidden">
+        <input class="hidden gamepin" type="text" name="gamepin" placeholder="Enter game pin" required="required">
         <input type="text" id="nickname" name="nickname" maxlength="16" placeholder="Enter a name">
         <img class="next" src="assets/images/next.png"/>
-    </div>
+
+    </form>
 
     <div class="hidden" id="difficulty">
         <h1>Choose a number of questions</h1>
         <a href="#" data-amount="2" class="difficulty">Easy</a>
         <a href="#" data-amount="3" class="difficulty">Medium</a>
         <a href="#" data-amount="4" class="difficulty">Hard</a>
+        <a href="#" data-amount="1" class="difficulty" id="classroom">Classroom</a>
+        <!--<a href="#" data-amount="50" class="difficulty">Time Attack</a>-->
         <a href="#" data-mode="1" class="difficulty">Timed</a>
     </div>
 
@@ -96,12 +100,25 @@
 
         </div>
         <p class="score">0</p>
-        <a href="#" class="again">Final score
+        <p>Final score</p>
+        <a href="#" class="hidden scoreboard">Scoreboard</a>
+        <div id="scoreboard" class="hidden">
+            <table id="scoreboardTable">
+                <tr>
+                    <th>Name</th>
+                    <th>Score</th>
+                </tr>
+
+            </table>
+        </div>
+        <a href="#" class="again">
             <span>
                     <img class="again-button" src="assets/images/play%20with%20me.png"/>
                 </span>
         </a>
     </div>
+</div>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
     <script src="assets/js/localforage.min.js"></script>
     <script src="assets/js/script.js"></script>

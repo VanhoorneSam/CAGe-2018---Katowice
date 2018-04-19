@@ -48,6 +48,23 @@ h1{
     display: inline;
 }
 
+.gamepin{
+    width: 80%;
+    font-size: xx-large;
+    padding: 30px;
+    border: 1px #FF9100 solid;
+    background: none;
+    color: whitesmoke;
+    margin-bottom: 2rem;
+}
+
+.scoreboard{
+    text-decoration: none;
+    color: #ff9100;
+    margin-top: 2rem;
+    display: block;
+}
+
 #time {
     position: absolute;
     top: 5vh;
@@ -68,6 +85,11 @@ fieldset {
     font-size: xx-large;
     width: 50vw;
     border-bottom: 1px whitesmoke solid;
+}
+
+#question{
+    color: #ff9100;
+    margin: 1rem;
 }
 
 #addQuestion textarea, #addQuestion input[type="text"] {
@@ -92,7 +114,7 @@ fieldset {
     height: 14vh;
     margin-left: auto;
     margin-right: auto;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     font-size: large;
     border-radius: 10px;
     padding-left: 10px;
@@ -103,7 +125,6 @@ fieldset {
 
 .difficulty{
     line-height: 14vh;
-    width: 25%;
     display: inline-block;
 }
 
@@ -215,7 +236,7 @@ table tr:nth-child(even) {
 }
 
 #difficulty a{
-    font-size: 6vh;
+    font-size: 8vh;
     margin-bottom: 1vh;
 }
 
@@ -296,5 +317,14 @@ li{
     font-weight: bolder;
     display: block;
     margin-top: 1rem;
+    color: #ff9100;
+}
+
+table{
+    margin: 2rem auto;
+    width:80%;
+}
+
+th{
     color: #ff9100;
 }
