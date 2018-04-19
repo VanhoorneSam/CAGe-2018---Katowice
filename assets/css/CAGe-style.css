@@ -70,7 +70,7 @@ fieldset {
     border-bottom: 1px whitesmoke solid;
 }
 
-#question {
+#addQuestion textarea, #addQuestion input[type="text"] {
     font-size: XX-large;
     width: 90%;
     margin: auto;
@@ -219,6 +219,56 @@ table tr:nth-child(even) {
     margin-bottom: 1vh;
 }
 
+#edit, #delete{
+    width: 60%;
+    height: auto;
+    align-content: center;
+}
+
+#lblquestion,#lblrightanswer,#lblwronganswer,#lblwronganswer2,#lblwronganswer3{
+    color: #ff9100;
+    width: 90%;
+    display: inline-block;
+}
+
+#lblcategorie,#lblchapter{
+    color: #ff9100;
+    display: inline;
+    width: 40%;
+    height: 50px;
+}
+
+#addQuestion > textarea{
+    width: 90%;
+    padding: 5px;
+    margin: 0px auto;
+}
+
+#addQuestion > select{
+    display: inline;
+    width: 40%;
+    height: 30px;
+    border-radius: 20px;
+}
+
+#addQuestion > input[type="submit"]{
+    width: 90%;
+    height: 50px;
+    margin: 0px auto;
+    background-color: #ff9100;
+    font-size: 2rem;
+    color: #262626;
+    border: 2px solid #262626;
+    border-radius: 20px;
+}
+
+#headerInfo{
+    text-align: center;
+}
+
+.errors{
+    color: #ff0033;
+}
 #welcome{
     width: 80%;
     margin: auto;

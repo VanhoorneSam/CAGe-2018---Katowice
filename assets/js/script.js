@@ -3,7 +3,7 @@ var correctAnswer;
 var currentQuestionIndex = 0;
 var totalScore = 0;
 var counter = 0;
-var totalQuestions = 2;
+// var totalQuestions = 2;
 var timer = 0;
 var numberOfQuestionsPerChapter;
 var numberOfChapters = 14;
