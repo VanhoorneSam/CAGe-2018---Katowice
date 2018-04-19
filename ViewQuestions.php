@@ -22,13 +22,15 @@ if (isset($_POST['delete'])) {
         $idChapter = $s['idChapter'];
     }
     $rightAnswerArr = getRightAnswerFromQuestion($idQuestion);
+    $idAnswerArr = array();
     foreach ($rightAnswerArr as $s) {
         $nameRightAnswer = $s['nameAnswer'];
+        array_push($idAnswerArr,$s['idAnswer']);
     }
     $wrongAnswerArr = getWrongAnswersFromQuestion($idQuestion);
 
     echo('<form name="addQuestion" id="addQuestion" method="post" action="' . $_SERVER['PHP_SELF'] . '">');
-
+    echo ('<input class="hidden" type="text" name="idQuestion" value="'.$idQuestion.'"');
 
     echo('<label for="chapter" > Chapter: </label >');
     echo('<select id = "chapter" name = "chapter" >');
@@ -56,19 +58,30 @@ if (isset($_POST['delete'])) {
     echo('<input type = "text" id = "rightanswer" name = "rightanswer" value="' . $nameRightAnswer . '">');
 
 
-    $countOfAnswers = 0;
+    $countOfAnswers = 1;
     foreach ($wrongAnswerArr as $wrongAnswer) {
         echo('<label for="question" > Wrong answer: </label >');
         echo('<input type = "text" id = "wronganswer1" name = "wronganswer' . $countOfAnswers . '" value="' . $wrongAnswer["nameAnswer"] . '" >');
+        array_push($idAnswerArr,$wrongAnswer['idAnswer']);
         $countOfAnswers++;
     }
-
-    echo('<input type = "submit" name = "submit" >');
+    echo ('<input type=""text name="idAnswers" value="'. base64_encode(serialize($idAnswerArr)).'" class="hidden">');
+    echo('<input type = "submit" name = "submit">');
     echo('</form >');
 
 }else if (isset($_POST['submit'])){
-    var_dump(1);
-    $newChapter = $_POST['chapter'];
+    $newQuestion = zuiverData($_POST["question"]);
+    $newChapter = $_POST["chapter"];
+    $newAnswerArr = array(zuiverData($_POST["rightanswer"]),zuiverData($_POST["wronganswer1"]),zuiverData($_POST["wronganswer2"]),zuiverData($_POST["wronganswer3"]));
+    /*$newNameAnswerRight = zuiverData($_POST["rightanswer"]);
+    $newNameAnswerWrong1 = zuiverData($_POST["wronganswer1"]);
+    $newNameAnswerWrong2 = zuiverData($_POST["wronganswer2"]);
+    $newNameAnswerWrong3 = zuiverData($_POST["wronganswer3"]);*/
+    $idAnswerStr = $_POST["idAnswers"];
+    $idAnswerArr = unserialize(base64_decode($idAnswerStr));
+    $idQuestion=$_POST['idQuestion'];
+    editQuestion($newQuestion,$newChapter,$idQuestion);
+    editAllAnswers($newAnswerArr,$idAnswerArr);
 }
 ?>
 

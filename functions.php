@@ -219,20 +219,29 @@ function editQuestion($newQuestion, $newChapter, $idQuestion)
 
 }
 
-function editAnswers($newAnswer, $idAnswer)
+function editAnswers($newAnswer,$idAnswer)
 {
     global $config;
     try {
         $conn = new PDO("mysql:host=" . $config["host"] . ";dbname=" . $config["database"], $config["username"], $config["password"]);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $stmt = $conn->prepare("UPDATE answer SET nameAnswer = :answer, WHERE idAsnwer = :idAnswer");
-        $stmt->bindValue(':question', $newAnswer);
+        $stmt = $conn->prepare(" UPDATE answer SET nameAnswer = :answer WHERE idAnswer = :idAnswer ");
+        $stmt->bindValue(':answer', $newAnswer);
         $stmt->bindValue(':idAnswer', $idAnswer);
         $stmt->execute();
     } catch (PDOException $e) {
         die($e->getMessage());
     }
 }
+
+function editAllAnswers($newAnswersArr, $idAnswerArr){
+    $index = 0;
+    foreach ($idAnswerArr as $id){
+        editAnswers($newAnswersArr[$index],$id);
+        $index++;
+    }
+}
+
 
 
 function getRightAnswerFromQuestion($idQuestion)
@@ -241,7 +250,7 @@ function getRightAnswerFromQuestion($idQuestion)
     try {
         $conn = new PDO("mysql:host=" . $config["host"] . ";dbname=" . $config["database"], $config["username"], $config["password"]);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $stmt = $conn->prepare("SELECT nameAnswer FROM answer WHERE idQuestion = :idquestion AND IsCorrect=1");
+        $stmt = $conn->prepare("SELECT nameAnswer,idAnswer FROM answer WHERE idQuestion = :idquestion AND IsCorrect=1");
         $stmt->bindValue(':idquestion', $idQuestion);
         $stmt->execute();
         $RightAnswer = $stmt->fetchAll();
@@ -258,7 +267,7 @@ function getWrongAnswersFromQuestion($idQuestion)
     try {
         $conn = new PDO("mysql:host=" . $config["host"] . ";dbname=" . $config["database"], $config["username"], $config["password"]);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $stmt = $conn->prepare("SELECT nameAnswer FROM answer WHERE idQuestion = :idquestion AND IsCorrect=0");
+        $stmt = $conn->prepare("SELECT nameAnswer,idAnswer FROM answer WHERE idQuestion = :idquestion AND IsCorrect=0");
         $stmt->bindValue(':idquestion', $idQuestion);
         $stmt->execute();
         $WrongAnswers = $stmt->fetchAll();
@@ -296,5 +305,12 @@ function getChapterById($idChapter){
         die($e->getMessage());
     }
     return $chapter;
+}
+
+function zuiverData($data)
+{
+    $data = trim($data);
+    $data = htmlentities($data, ENT_QUOTES);
+    return $data;
 }
 
