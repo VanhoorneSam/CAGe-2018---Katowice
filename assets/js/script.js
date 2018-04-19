@@ -120,9 +120,11 @@ $(".answers").on("mousedown", ".answer span" ,  function (event) {
 
     event.preventDefault();
 
-
+    if (event.which === 1) {
         $(".answer").removeClass("selectedAnswer");
         $(this).parent().addClass("selectedAnswer");
+    }
+
 
 
 });
