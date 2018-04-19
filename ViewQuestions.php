@@ -13,7 +13,7 @@ include_once("functions.php");
 
 if (isset($_POST['delete'])) {
     $idQuestion = $_POST['delete'];
-    deleteAnswer($idQuestion);
+    deleteAnswerByIdQuestion($idQuestion);
 } else if (isset($_POST['edit'])) {
     $idQuestion = $_POST['edit'];
     $question = getQuestionById($idQuestion);
@@ -73,12 +73,7 @@ if (isset($_POST['delete'])) {
     $newQuestion = zuiverData($_POST["question"]);
     $newChapter = $_POST["chapter"];
     $newAnswerArr = array(zuiverData($_POST["rightanswer"]),zuiverData($_POST["wronganswer1"]),zuiverData($_POST["wronganswer2"]),zuiverData($_POST["wronganswer3"]));
-    /*$newNameAnswerRight = zuiverData($_POST["rightanswer"]);
-    $newNameAnswerWrong1 = zuiverData($_POST["wronganswer1"]);
-    $newNameAnswerWrong2 = zuiverData($_POST["wronganswer2"]);
-    $newNameAnswerWrong3 = zuiverData($_POST["wronganswer3"]);*/
-    $idAnswerStr = $_POST["idAnswers"];
-    $idAnswerArr = unserialize(base64_decode($idAnswerStr));
+    $idAnswerArr = unserialize(base64_decode($_POST["idAnswers"]));
     $idQuestion=$_POST['idQuestion'];
     editQuestion($newQuestion,$newChapter,$idQuestion);
     editAllAnswers($newAnswerArr,$idAnswerArr);
@@ -130,12 +125,10 @@ if (isset($_POST['delete'])) {
                 echo('</ul></td>');
 
                 echo('<td>');
-                //echo('<img src="assets/images/edit.svg" id="edit" name="'. $question['idQuestion'].'" />');
                 echo('<input type="image" src="assets/images/edit.svg" name="edit" id="edit" value="' . $question['idQuestion'] . '"/>');
                 echo('</td>');
 
                 echo('<td>');
-                // echo('<a href="ViewQuestions.php?del='.$question['idQuestion'].'"><img src="assets/images/delete.svg" id="delete" name="'. $question['idQuestion'].'" /></a>');
                 echo('<input type="image" src="assets/images/delete.svg" name="delete" id="delete" value="' . $question['idQuestion'] . '"/>');
                 echo('</td>');
                 echo('</tr>');
