@@ -265,7 +265,7 @@ function editQuestion($newQuestion, $newChapter, $idQuestion)
 
 }
 
-function editAnswers($newAnswerRight, $newAnswerWrong1, $newAnswerWrong2, $newAnswerWrong3, $idAnswer)
+function editAnswers($newAnswer,$idAnswer)
 {
     try {
         $servername = "localhost";
@@ -275,14 +275,23 @@ function editAnswers($newAnswerRight, $newAnswerWrong1, $newAnswerWrong2, $newAn
 
         $conn = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $stmt = $conn->prepare("UPDATE answer SET nameAnswer = :answer, WHERE idAnswer = :idAnswer");
-        $stmt->bindValue(':question', $newAnswerRight);
+        $stmt = $conn->prepare(" UPDATE answer SET nameAnswer = :answer WHERE idAnswer = :idAnswer ");
+        $stmt->bindValue(':answer', $newAnswer);
         $stmt->bindValue(':idAnswer', $idAnswer);
         $stmt->execute();
     } catch (PDOException $e) {
         die($e->getMessage());
     }
 }
+
+function editAllAnswers($newAnswersArr, $idAnswerArr){
+    $index = 0;
+    foreach ($idAnswerArr as $id){
+        editAnswers($newAnswersArr[$index],$id);
+        $index++;
+    }
+}
+
 
 
 function getRightAnswerFromQuestion($idQuestion)
@@ -295,7 +304,7 @@ function getRightAnswerFromQuestion($idQuestion)
 
         $conn = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $stmt = $conn->prepare("SELECT nameAnswer FROM answer WHERE idQuestion = :idquestion AND IsCorrect=1");
+        $stmt = $conn->prepare("SELECT nameAnswer,idAnswer FROM answer WHERE idQuestion = :idquestion AND IsCorrect=1");
         $stmt->bindValue(':idquestion', $idQuestion);
         $stmt->execute();
         $RightAnswer = $stmt->fetchAll();
@@ -316,7 +325,7 @@ function getWrongAnswersFromQuestion($idQuestion)
 
         $conn = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $stmt = $conn->prepare("SELECT nameAnswer FROM answer WHERE idQuestion = :idquestion AND IsCorrect=0");
+        $stmt = $conn->prepare("SELECT nameAnswer,idAnswer FROM answer WHERE idQuestion = :idquestion AND IsCorrect=0");
         $stmt->bindValue(':idquestion', $idQuestion);
         $stmt->execute();
         $WrongAnswers = $stmt->fetchAll();
