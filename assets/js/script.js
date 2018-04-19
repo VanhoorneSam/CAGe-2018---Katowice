@@ -9,6 +9,7 @@ var numberOfQuestionsPerChapter;
 var numberOfChapters = 14;
 var KEY_QUESTIONS = "questions";
 var totalSeconds = 0;
+var allChapters = [];
 
 $(document).ready(function () {
     $(".nickname-panel .next").on("click", startGame);
@@ -170,6 +171,20 @@ var loadQuestion = function (givenQuestion) {
 
 };
 
+// var renderScore = function () {
+//     var solutionobject = iansfunction();
+//
+//     for(var i=0; i<allChapters.length; i++){
+//         var currentchapter = allChapters[i];
+//         var score = solutionobject[currentchapter];
+//
+//         $("#scoreperchapter").append("<li>"+ currentchapter +" "+ score +"/"+numberOfQuestionsPerChapter+"</li>");
+//
+//     }
+//
+//
+// };
+
 
 var nextQuestion = function () {
 
@@ -178,6 +193,7 @@ var nextQuestion = function () {
         $(".final-screen").fadeIn("normal");
         $("header").fadeOut("normal");
         $(".score").text(totalScore);
+        //TODO hier call naar functie die score li in ul stopt
     } else {
         $(".answer").removeClass("selectedAnswer");
         $(".question-page").fadeIn("normal");
@@ -269,7 +285,7 @@ function shuffleObject(sourceArray) {
 
 function filterQuestionsIntoChapter(questionboject) {
 
-    var allChapters = [];
+
 
     var sortedQuestions = {};
 
