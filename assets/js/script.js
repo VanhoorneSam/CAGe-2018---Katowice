@@ -18,7 +18,7 @@ $(document).ready(function () {
 
 var learnMore = function () {
     $("#chapters").slideToggle("slow");
-}
+};
 
 
 var askName = function () {
@@ -94,10 +94,12 @@ var finalGrade = function () {
 var grade = function (rightWrong) {
     questionsObject[currentQuestionIndex].answerCorrect = rightWrong;
     console.log(questionsObject);
-}
+};
 
 var startGame = function () {
-
+    var nick = ($("#nickname").val());
+    if(nick.length>0){    $('.player-name').text($("#nickname").val());
+    }
     // function (data) {
     //     questionsObject = data;
     //     for (i = 0; i < data.length; i++) {
@@ -122,7 +124,7 @@ var startGame = function () {
             console.log("cached " + totalQuestions + " questions");
     $("#counter").text("1/" + totalQuestions);
 
-        })
+        });
 
 
         fadeOutNicknamePanel();
