@@ -8,6 +8,6 @@
 return array(
     'host' => 'localhost',
     'database' => 'cage',
-    'username' => 'cageuser',
-    'password' => 'cageuser'
+    'username' => 'root',
+    'password' => ''
 );
