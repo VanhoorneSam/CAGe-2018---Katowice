@@ -10,6 +10,8 @@ var numberOfChapters = 14;
 var KEY_QUESTIONS = "questions";
 var totalSeconds = 0;
 var allChapters = [];
+var isTimeAttack = false;
+var timeAttackTime = 20;
 
 $(document).ready(function () {
     $(".nickname-panel .next").on("click", startGame);
@@ -26,6 +28,11 @@ var learnMore = function () {
 
 var askName = function () {
 
+    if(($(this).attr("data-mode"))==1){
+        isTimeAttack=true;
+    } else {
+        isTimeAttack=false;
+    }
     numberOfQuestionsPerChapter = ($(this).attr("data-amount"));
     totalQuestions = $(this).attr("data-amount");
 
@@ -59,9 +66,15 @@ var startGame = function () {
         pickAmmountOfQuestions(allQuestions);
         totalQuestions = Object.keys(questionsObject).length;
 
+        if (!isTimeAttack){
+
         localforage.setItem(KEY_QUESTIONS, JSON.stringify(data)).then(function () {
+            console.log("cached " + totalQuestions + " questions");
             $("#counter").text("1/" + totalQuestions);
         });
+        } else {
+            $("#counter").text(timeAttackTime);
+        }
 
         fadeOutNicknamePanel();
     }
@@ -212,17 +225,26 @@ var renderScore = function () {
 var nextQuestion = function () {
 
     //$("#counter").text(currentQuestionIndex + 1 + "/" + totalQuestions);
-    if (currentQuestionIndex === totalQuestions) {
+    if (currentQuestionIndex === totalQuestions || isTimeAttack && timeAttackTime<=0) {
         $(".final-screen").fadeIn("normal");
         $("header").fadeOut("normal");
         $(".score").text(totalScore);
-        renderScore();
+        if(!isTimeAttack)
+        {
+            $("#learnMore").removeClass("hidden");
+            renderScore();
+        } else {
+            $("#learnMore").addClass("hidden");
+
+        }
     } else {
         $(".answer").removeClass("selectedAnswer");
         $(".question-page").fadeIn("normal");
 
         loadQuestion(questionsObject[currentQuestionIndex]);
-        $("#counter").text(currentQuestionIndex + 1 + "/" + totalQuestions);
+        if(!isTimeAttack){
+            $("#counter").text(currentQuestionIndex + 1 + "/" + totalQuestions);
+        }
 
 
     }
@@ -260,6 +282,21 @@ $("#nickname").keyup(function () {
     $('.player-name').text($(this).val());
 });
 
+
+//////////TIMER
+
+var timer = setInterval(function(){
+    if(isTimeAttack)
+    {
+        timeAttackTime--;
+        $("#counter").text(timeAttackTime);
+        if(timeAttackTime <= 0)
+            clearInterval(timer);
+    }
+
+},1000);
+
+/////
 
 function setTime() {
     totalSeconds++;
@@ -346,6 +383,11 @@ function filterQuestionsIntoChapter(questionboject) {
 function pickAmmountOfQuestions(allQuestions) {
     var currentAmmountOfQuestions = 0;
     questionsObject = {};
+
+    if(isTimeAttack){
+        numberOfQuestionsPerChapter = 10;
+    }
+
     for (var chapter in allQuestions) {
         for (var i = 0; i < numberOfQuestionsPerChapter; i++) {
             questionsObject[currentAmmountOfQuestions] = allQuestions[chapter][i];
