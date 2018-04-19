@@ -265,7 +265,7 @@ function editQuestion($newQuestion, $newChapter, $idQuestion)
 
 }
 
-function editAnswers($newAnswer, $idAnswer)
+function editAnswers($newAnswerRight, $newAnswerWrong1, $newAnswerWrong2, $newAnswerWrong3, $idAnswer)
 {
     try {
         $servername = "localhost";
@@ -275,8 +275,8 @@ function editAnswers($newAnswer, $idAnswer)
 
         $conn = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $stmt = $conn->prepare("UPDATE answer SET nameAnswer = :answer, WHERE idAsnwer = :idAnswer");
-        $stmt->bindValue(':question', $newAnswer);
+        $stmt = $conn->prepare("UPDATE answer SET nameAnswer = :answer, WHERE idAnswer = :idAnswer");
+        $stmt->bindValue(':question', $newAnswerRight);
         $stmt->bindValue(':idAnswer', $idAnswer);
         $stmt->execute();
     } catch (PDOException $e) {
@@ -325,7 +325,9 @@ function getWrongAnswersFromQuestion($idQuestion)
     }
     return $WrongAnswers;
 }
-function getQuestionById($idQuestion){
+
+function getQuestionById($idQuestion)
+{
     try {
         $servername = "localhost";
         $username = "root";
@@ -344,7 +346,9 @@ function getQuestionById($idQuestion){
     }
     return $question;
 }
-function getChapterById($idChapter){
+
+function getChapterById($idChapter)
+{
     try {
         $servername = "localhost";
         $username = "root";
@@ -362,5 +366,12 @@ function getChapterById($idChapter){
         die($e->getMessage());
     }
     return $chapter;
+}
+
+function zuiverData($data)
+{
+    $data = trim($data);
+    $data = htmlentities($data, ENT_QUOTES);
+    return $data;
 }
 

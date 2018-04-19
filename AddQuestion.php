@@ -11,12 +11,12 @@
 <?php
 include_once("functions.php");
 if (isset($_POST['submit'])) {
-    $question = $_POST["question"];
+    $question = zuiverData($_POST["question"]);
     $chapter = $_POST["chapter"];
-    $nameAnswerRight = $_POST["rightanswer"];
-    $nameAnswerWrong1 = $_POST["wronganswer1"];
-    $nameAnswerWrong2 = $_POST["wronganswer2"];
-    $nameAnswerWrong3 = $_POST["wronganswer3"];
+    $nameAnswerRight = zuiverData($_POST["rightanswer"]);
+    $nameAnswerWrong1 = zuiverData($_POST["wronganswer1"]);
+    $nameAnswerWrong2 = zuiverData($_POST["wronganswer2"]);
+    $nameAnswerWrong3 = zuiverData($_POST["wronganswer3"]);
     try {
         addQuestion($question, $chapter, $nameAnswerRight, $nameAnswerWrong1, $nameAnswerWrong2, $nameAnswerWrong3);
         echo("Question succesfully added!");

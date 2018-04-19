@@ -68,7 +68,12 @@ if (isset($_POST['delete'])) {
 
 }else if (isset($_POST['submit'])){
     var_dump(1);
-    $newChapter = $_POST['chapter'];
+    $newQuestion = zuiverData($_POST["question"]);
+    $newChapter = $_POST["chapter"];
+    $newNameAnswerRight = zuiverData($_POST["rightanswer"]);
+    $newNameAnswerWrong1 = zuiverData($_POST["wronganswer1"]);
+    $newNameAnswerWrong2 = zuiverData($_POST["wronganswer2"]);
+    $newNameAnswerWrong3 = zuiverData($_POST["wronganswer3"]);
 }
 ?>
 
