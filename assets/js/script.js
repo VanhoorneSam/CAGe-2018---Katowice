@@ -114,23 +114,34 @@ var verifyQuestion = function (pickedAnswer) {
 
 };
 
+///Controll scheme, can do with some cleaning up
 
-$(".answer span").on("click", function (event) {
+$(".answer span").on("mousedown", function (event) {
 
     event.preventDefault();
 
-    if ($(this).parent().hasClass("selectedAnswer")) {
 
-        verifyQuestion($(this).text());
-
-
-    } else {
         $(".answer").removeClass("selectedAnswer");
         $(this).parent().addClass("selectedAnswer");
 
-    }
 
 });
+
+$(".answer span").on("mouseup", function (event) {
+
+    event.preventDefault();
+
+    if ($(this).parent().hasClass("selectedAnswer"))
+    {
+        verifyQuestion($(this).text());
+    }
+});
+
+$(document).on("mouseup", function(event){
+    $(".answer").removeClass("selectedAnswer");
+});
+
+///
 
 $(".home-page a").on("click", function () {
 
