@@ -10,8 +10,8 @@
 return array(
     'host' => 'localhost',
     'database' => 'cage',
-    'username' => 'consumee',
-    'password' => 'consumee'
+    'username' => 'root',
+    'password' => ''
 );
 
 // server config

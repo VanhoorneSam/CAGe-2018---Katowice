@@ -55,7 +55,6 @@ var startGame = function () {
         for (var i = 0; i < data.length; i++) {
             questionsObject[i] = JSON.parse(questionsObject[i]);
         }
-        console.log(questionsObject)
         var allQuestions = filterQuestionsIntoChapter(questionsObject);
         pickAmmountOfQuestions(allQuestions);
         totalQuestions = Object.keys(questionsObject).length;
@@ -68,8 +67,6 @@ var startGame = function () {
     }
 
     function error(jqXHR, textStatus, errorThrown) {
-        console.error("error");
-        console.log(textStatus);
         if (typeof console != "undefined") {
             console.log(jqXHR.responseText);
             console.log(textStatus, errorThrown);
@@ -77,10 +74,9 @@ var startGame = function () {
 
         localforage.getItem("questions").then(q => {
             questionsObject = JSON.parse(q);
-            console.log(questionsObject.length);
+            questionsObject = shuffleArray(questionsObject);
             var allQuestions = filterQuestionsIntoChapter(questionsObject);
             pickAmmountOfQuestions(allQuestions);
-            console.log(questionsObject)
             totalQuestions = Object.keys(questionsObject).length;
             $("#counter").text("1/" + totalQuestions);
             fadeOutNicknamePanel();
@@ -134,7 +130,6 @@ $(".answers").on("mousedown", ".answer span", function (event) {
 $(".answers").on("mouseup", ".answer span", function (event) {
 
     event.preventDefault();
-    console.log("mouseup on a question");
     if ($(this).parent().hasClass("selectedAnswer")) {
         verifyQuestion($(this).text());
     }
@@ -172,7 +167,6 @@ $(".home-page a").on("click", function () {
 
 
 var loadQuestion = function (givenQuestion) {
-    console.log(givenQuestion);
     $("#question span").text(givenQuestion['question']);
     delete givenQuestion[0];
     correctAnswer = givenQuestion.rightAnswer;
@@ -237,7 +231,6 @@ var countCorrectQuestionsPerChapter = function () {
     var correctAnswer = {};
     allChapters.forEach(x=>correctAnswer[x] = 0);
     for (var question in questionsObject) {
-        console.log(questionsObject[question]["answerCorrect"]);
         if (questionsObject[question]["answerCorrect"] === true) {
             correctAnswer[questionsObject[question]["chapter"]]++;
         }
@@ -303,15 +296,24 @@ function shuffleArray(array) {
 
     return array;
 }
-function shuffleObject(sourceArray) {
-    for (var i = 0; i < Object.keys(sourceArray).length - 1; i++) {
-        var j = i + Math.floor(Math.random() * (Object.keys(sourceArray).length - i));
 
-        var temp = sourceArray[j];
-        sourceArray[j] = sourceArray[i];
-        sourceArray[i] = temp;
+function shuffleObject(sourceArray) {
+    sourceArray = Object.values(sourceArray);
+    var shuffledArray = [];
+    var rand = getRandomInt(0, sourceArray.length - 1);
+    var count = 0;
+    while (Object.keys(sourceArray).length > 0) {
+        if (sourceArray[rand] !== undefined) {
+            shuffledArray.push(sourceArray[rand]);
+            sourceArray.splice(rand, 1);
+        }
+        rand = getRandomInt(0, sourceArray.length);
     }
-    return sourceArray;
+    return shuffledArray;
+}
+
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 
@@ -342,25 +344,15 @@ function filterQuestionsIntoChapter(questionboject) {
 }
 
 function pickAmmountOfQuestions(allQuestions) {
-
     var currentAmmountOfQuestions = 0;
-
     questionsObject = {};
-
     for (var chapter in allQuestions) {
-
         for (var i = 0; i < numberOfQuestionsPerChapter; i++) {
-
-
             questionsObject[currentAmmountOfQuestions] = allQuestions[chapter][i];
-
-
             currentAmmountOfQuestions++;
         }
-
     }
     shuffleObject(questionsObject);
-
 }
 
 var RequestQuestions = function (success, error) {
