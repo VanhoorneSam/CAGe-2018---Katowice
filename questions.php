@@ -13,7 +13,7 @@ include("JsonUtil.php");
 
 header('Content-Type: application/json');
 
-$path_to_credentials =  __DIR__ . "/../credentials.php";
+$path_to_credentials =  __DIR__ . "/credentials.php";
 $config = include($path_to_credentials);
 
 

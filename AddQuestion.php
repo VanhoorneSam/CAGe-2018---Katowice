@@ -10,6 +10,9 @@
 <body>
 <?php
 include_once("functions.php");
+
+
+
 if (isset($_POST['submit'])) {
     $question = $_POST["question"];
     $chapter = $_POST["chapter"];
@@ -71,5 +74,8 @@ if (isset($_POST['submit'])) {
         <input type="submit" name="submit">
     </form>
 </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+<script src="assets/js/question_validator.js"></script>
 </body>
 </html>

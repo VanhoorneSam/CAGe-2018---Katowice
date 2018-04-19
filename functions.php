@@ -6,8 +6,13 @@
  * Time: 10:44
  */
 
+$path_to_credentials =  __DIR__ . "/credentials.php";
+$config = include($path_to_credentials);
+
 function getAllCategories()
 {
+    global $config;
+
     try {
         $servername = "localhost";
         $username = "root";
@@ -27,13 +32,10 @@ function getAllCategories()
 
 function getCategorie($id)
 {
+    global $config;
     try {
-        $servername = "localhost";
-        $username = "root";
-        $password = "";
-        $database = "cage";
 
-        $conn = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
+        $conn = new PDO("mysql:host=" . $config["host"] . ";dbname=" . $config["database"], $config["username"], $config["password"]);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $stmt = $conn->prepare("SELECT * FROM categorie WHERE idCategorie = $id");
         $stmt->execute();
@@ -46,13 +48,9 @@ function getCategorie($id)
 
 function getCategorieCount()
 {
+    global $config;
     try {
-        $servername = "localhost";
-        $username = "root";
-        $password = "";
-        $database = "cage";
-
-        $conn = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
+        $conn = new PDO("mysql:host=" . $config["host"] . ";dbname=" . $config["database"], $config["username"], $config["password"]);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $stmt = $conn->prepare("SELECT * FROM categorie");
         $stmt->execute();
@@ -65,13 +63,9 @@ function getCategorieCount()
 
 function getAllChapters()
 {
+    global $config;
     try {
-        $servername = "localhost";
-        $username = "root";
-        $password = "";
-        $database = "cage";
-
-        $conn = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
+        $conn = new PDO("mysql:host=" . $config["host"] . ";dbname=" . $config["database"], $config["username"], $config["password"]);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $stmt = $conn->prepare("SELECT * FROM chapter");
         $stmt->execute();
@@ -84,13 +78,9 @@ function getAllChapters()
 
 function getChapter($id)
 {
+    global $config;
     try {
-        $servername = "localhost";
-        $username = "root";
-        $password = "";
-        $database = "cage";
-
-        $conn = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
+        $conn = new PDO("mysql:host=" . $config["host"] . ";dbname=" . $config["database"], $config["username"], $config["password"]);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $stmt = $conn->prepare("SELECT * FROM chapter WHERE idChapter = $id");
         $stmt->execute();
@@ -103,13 +93,9 @@ function getChapter($id)
 
 function getChapterCount()
 {
+    global $config;
     try {
-        $servername = "localhost";
-        $username = "root";
-        $password = "";
-        $database = "cage";
-
-        $conn = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
+        $conn = new PDO("mysql:host=" . $config["host"] . ";dbname=" . $config["database"], $config["username"], $config["password"]);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $stmt = $conn->prepare("SELECT * FROM chapter");
         $stmt->execute();
@@ -122,13 +108,9 @@ function getChapterCount()
 
 function getAllQuestions()
 {
+    global $config;
     try {
-        $servername = "localhost";
-        $username = "root";
-        $password = "";
-        $database = "cage";
-
-        $conn = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
+        $conn = new PDO("mysql:host=" . $config["host"] . ";dbname=" . $config["database"], $config["username"], $config["password"]);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $stmt = $conn->prepare("SELECT *,chapter.nameChapter,categorie.nameCategorie FROM question LEFT JOIN chapter ON question.idChapter = chapter.idChapter LEFT JOIN categorie ON chapter.idCategorie = categorie.idCategorie");
         $stmt->execute();
@@ -141,13 +123,9 @@ function getAllQuestions()
 
 function addQuestion($question, $chapter, $nameAnswerRight, $nameAnswerWrong1, $nameAnswerWrong2, $nameAnswerWrong3)
 {
+    global $config;
     try {
-        $servername = "localhost";
-        $username = "root";
-        $password = "";
-        $database = "cage";
-
-        $conn = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
+        $conn = new PDO("mysql:host=" . $config["host"] . ";dbname=" . $config["database"], $config["username"], $config["password"]);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $stmt = $conn->prepare("INSERT INTO question(nameQuestion, idChapter) VALUES(:question,:chapter)");
         $stmt->bindValue(':question', $question);
@@ -161,13 +139,9 @@ function addQuestion($question, $chapter, $nameAnswerRight, $nameAnswerWrong1, $
 
 function getLastQuestionId()
 {
+    global $config;
     try {
-        $servername = "localhost";
-        $username = "root";
-        $password = "";
-        $database = "cage";
-
-        $conn = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
+        $conn = new PDO("mysql:host=" . $config["host"] . ";dbname=" . $config["database"], $config["username"], $config["password"]);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $stmt = $conn->prepare("SELECT idQuestion FROM question ORDER BY idQuestion DESC LIMIT 1");
         $stmt->execute();
@@ -181,6 +155,7 @@ function getLastQuestionId()
 
 function addAnswer($nameAnswerRight, $nameAnswerWrong1, $nameAnswerWrong2, $nameAnswerWrong3)
 {
+    global $config;
     try {
 
         $lastQuestionIdArr = getLastQuestionId();
@@ -188,12 +163,7 @@ function addAnswer($nameAnswerRight, $nameAnswerWrong1, $nameAnswerWrong2, $name
             $lastQuestionId = $s['idQuestion'];
         }
 
-        $servername = "localhost";
-        $username = "root";
-        $password = "";
-        $database = "cage";
-
-        $conn = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
+        $conn = new PDO("mysql:host=" . $config["host"] . ";dbname=" . $config["database"], $config["username"], $config["password"]);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $stmt = $conn->prepare("INSERT INTO answer(idQuestion, nameAnswer, IsCorrect) VALUES(:idQuestion, :nameAnswerRight, 1),(:idQuestion, :nameAnswerWrong1, 0),(:idQuestion, :nameAnswerWrong2, 0),(:idQuestion, :nameAnswerWrong3, 0)");
         $stmt->bindValue(':idQuestion', $lastQuestionId);
@@ -209,13 +179,9 @@ function addAnswer($nameAnswerRight, $nameAnswerWrong1, $nameAnswerWrong2, $name
 
 function deleteQuestion($idQuestion)
 {
+    global $config;
     try {
-        $servername = "localhost";
-        $username = "root";
-        $password = "";
-        $database = "cage";
-
-        $conn = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
+        $conn = new PDO("mysql:host=" . $config["host"] . ";dbname=" . $config["database"], $config["username"], $config["password"]);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $stmt = $conn->prepare("DELETE FROM question WHERE idQuestion = :idquestion");
         $stmt->bindParam(':idquestion', $idQuestion);
@@ -227,13 +193,9 @@ function deleteQuestion($idQuestion)
 
 function deleteAnswer($idQuestion)
 {
+    global $config;
     try {
-        $servername = "localhost";
-        $username = "root";
-        $password = "";
-        $database = "cage";
-
-        $conn = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
+        $conn = new PDO("mysql:host=" . $config["host"] . ";dbname=" . $config["database"], $config["username"], $config["password"]);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $stmt = $conn->prepare("DELETE FROM answer WHERE idQuestion = :idquestion");
         $stmt->bindParam(':idquestion', $idQuestion);
@@ -246,13 +208,9 @@ function deleteAnswer($idQuestion)
 
 function editQuestion($newQuestion, $newChapter, $idQuestion)
 {
+    global $config;
     try {
-        $servername = "localhost";
-        $username = "root";
-        $password = "";
-        $database = "cage";
-
-        $conn = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
+        $conn = new PDO("mysql:host=" . $config["host"] . ";dbname=" . $config["database"], $config["username"], $config["password"]);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $stmt = $conn->prepare("UPDATE question SET nameQuestion = :question, idChapter = :chapter WHERE idQuestion = :idQuestion");
         $stmt->bindValue(':question', $newQuestion);
@@ -267,13 +225,9 @@ function editQuestion($newQuestion, $newChapter, $idQuestion)
 
 function editAnswers($newAnswer, $idAnswer)
 {
+    global $config;
     try {
-        $servername = "localhost";
-        $username = "root";
-        $password = "";
-        $database = "cage";
-
-        $conn = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
+        $conn = new PDO("mysql:host=" . $config["host"] . ";dbname=" . $config["database"], $config["username"], $config["password"]);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $stmt = $conn->prepare("UPDATE answer SET nameAnswer = :answer, WHERE idAsnwer = :idAnswer");
         $stmt->bindValue(':question', $newAnswer);
@@ -287,13 +241,9 @@ function editAnswers($newAnswer, $idAnswer)
 
 function getRightAnswerFromQuestion($idQuestion)
 {
+    global $config;
     try {
-        $servername = "localhost";
-        $username = "root";
-        $password = "";
-        $database = "cage";
-
-        $conn = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
+        $conn = new PDO("mysql:host=" . $config["host"] . ";dbname=" . $config["database"], $config["username"], $config["password"]);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $stmt = $conn->prepare("SELECT nameAnswer FROM answer WHERE idQuestion = :idquestion AND IsCorrect=1");
         $stmt->bindValue(':idquestion', $idQuestion);
@@ -308,13 +258,9 @@ function getRightAnswerFromQuestion($idQuestion)
 
 function getWrongAnswersFromQuestion($idQuestion)
 {
+    global $config;
     try {
-        $servername = "localhost";
-        $username = "root";
-        $password = "";
-        $database = "cage";
-
-        $conn = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
+        $conn = new PDO("mysql:host=" . $config["host"] . ";dbname=" . $config["database"], $config["username"], $config["password"]);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $stmt = $conn->prepare("SELECT nameAnswer FROM answer WHERE idQuestion = :idquestion AND IsCorrect=0");
         $stmt->bindValue(':idquestion', $idQuestion);
@@ -326,13 +272,9 @@ function getWrongAnswersFromQuestion($idQuestion)
     return $WrongAnswers;
 }
 function getQuestionById($idQuestion){
+    global $config;
     try {
-        $servername = "localhost";
-        $username = "root";
-        $password = "";
-        $database = "cage";
-
-        $conn = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
+        $conn = new PDO("mysql:host=" . $config["host"] . ";dbname=" . $config["database"], $config["username"], $config["password"]);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $stmt = $conn->prepare("SELECT * FROM question WHERE idQuestion = :idQuestion");
         $stmt->bindValue(':idQuestion', $idQuestion);
@@ -345,13 +287,9 @@ function getQuestionById($idQuestion){
     return $question;
 }
 function getChapterById($idChapter){
+    global $config;
     try {
-        $servername = "localhost";
-        $username = "root";
-        $password = "";
-        $database = "cage";
-
-        $conn = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
+        $conn = new PDO("mysql:host=" . $config["host"] . ";dbname=" . $config["database"], $config["username"], $config["password"]);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $stmt = $conn->prepare("SELECT * FROM chapter WHERE idChapter = :idChapter");
         $stmt->bindValue(':idChapter', $idChapter);
