@@ -21,18 +21,54 @@ $config = include($path_to_credentials);
 
 function getShuffledQuestions($count){
     global $db;
+    global $jsonUtil;
 
-    $questionCount = $db->getQuestionCount();
-    $array = range(1, $questionCount);
-    shuffle($array);
     $finalArray = array();
-    for ($i = 0; $i < $questionCount; $i++) {
 
-        $nummer = $array[$i];
-        $object = $db->getNthQuestionNewFormat($nummer);
+    $questions = $db->getQuestionsInNewFormat();
+    $lastId = null;
 
-        $finalArray[] = $object;
-    }
+    $currentQuestion = null;
+    $wrong = array();
+
+    $counter = 0;
+
+   foreach ($questions as $question){
+
+       $currentId = $question['idQuestion'];
+       $nameQuestion = ($question['nameQuestion']);
+       $isCorrect = ($question['IsCorrect']);
+       $chapterName = $question['nameChapter'];
+       $categoryName = $question['nameCategorie'];
+       if($isCorrect){
+           $Correct = ($question['nameAnswer']);
+       } else {
+           $wrong[] = $question['nameAnswer'];
+       }
+
+
+       if($lastId !== null && $lastId !== $currentId){
+           $currentQuestion = array();
+
+           $merged = array(
+               'question' => $nameQuestion,
+               'wrongAnswers' => $wrong,
+               'rightAnswer' => $Correct,
+               'chapter' =>$chapterName,
+               'category' => $categoryName
+           );
+
+           $wrong = array();
+
+           $jsonEncode = json_encode($merged);
+           $finalArray[] = $jsonEncode;
+
+           $counter++;
+       }
+
+       $lastId = $question['idQuestion'];
+   }
+
     return $finalArray;
 }
 
