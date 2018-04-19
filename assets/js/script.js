@@ -175,7 +175,7 @@ var verifyQuestion = function (pickedAnswer) {
 };
 
 
-$(".answer span").on("click", function () {
+$(".answer span").on("click", function (event) {
 
     event.preventDefault();
 
@@ -225,7 +225,7 @@ var loadQuestion = function (givenQuestion) {
     var allAnswers = [];
     allAnswers.push(givenQuestion['rightAnswer']);
     givenQuestion['wrongAnswers'].forEach(x => allAnswers.push(x));
-    shuffle(allAnswers);
+    shuffleArray(allAnswers);
     $("#answer-one span").text([allAnswers[0]]);
     $("#answer-two span").text(allAnswers[randomTable[1]]);
     $("#answer-three span").text(allAnswers[randomTable[2]]);
@@ -311,12 +311,12 @@ function pad(val) {
 }
 
 
-function shuffle(array) {
+function shuffleArray(array) {
 
     var currentIndex = array.length,
         temporaryValue, randomIndex;
 
-    // While there remain elements to shuffle...
+    // While there remain elements to shuffleArray...
     while (0 !== currentIndex) {
 
         // Pick a remaining element...
@@ -330,6 +330,16 @@ function shuffle(array) {
     }
 
     return array;
+}
+function shuffleObject(sourceArray) {
+    for (var i = 0; i < Object.keys(sourceArray).length - 1; i++) {
+        var j = i + Math.floor(Math.random() * (Object.keys(sourceArray).length - i));
+
+        var temp = sourceArray[j];
+        sourceArray[j] = sourceArray[i];
+        sourceArray[i] = temp;
+    }
+    return sourceArray;
 }
 
 
@@ -356,7 +366,7 @@ function filterQuestionsIntoChapter(questionboject) {
         sortedQuestions[question.chapter].push(question);
 
     });
-
+    console.log(allChapters);
 
 
     return sortedQuestions;
@@ -382,8 +392,7 @@ function pickAmmountOfQuestions(allQuestions) {
         }
 
     }
-
-
+    shuffleObject(questionsObject);
 
 }
 
