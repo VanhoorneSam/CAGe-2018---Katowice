@@ -13,6 +13,9 @@ var allChapters = [];
 var isTimeAttack = false;
 var timeAttackTime = 20;
 
+var co = 0; //to prevent spamming of the buttons
+var st = 0;////to prevent spamming of the buttons
+
 $(document).ready(function () {
     $(".nickname-panel .next").on("click", startGame);
     $("#difficulty a").on("click", askName);
@@ -71,9 +74,8 @@ var grade = function (rightWrong) {
 };
 
 var startGame = function () {
-
-
-
+   if(st == 0){
+     st++;
     var nick = ($("#nickname").val());
     if (nick.length > 0) {
         $('.player-name').text($("#nickname").val());
@@ -119,7 +121,7 @@ var startGame = function () {
     }
 
     RequestQuestions(success, error);
-};
+}};
 
 function fadeOutNicknamePanel() {
 
@@ -166,7 +168,11 @@ $(".answers").on("mouseup", ".answer span", function (event) {
     event.preventDefault();
     if ($(this).parent().hasClass("selectedAnswer")) {
         verifyQuestion($(this).text());
+        co  = 0;
+        $(".answers").empty();
+
     }
+
 });
 
 $(document).on("mouseup", function (event) {
@@ -269,21 +275,25 @@ var countCorrectQuestionsPerChapter = function () {
 };
 
 $("a.next-succes").on("click", function () {
+    if(co  == 0){
+    co++;
     totalScore++;
-    grade(true);
+    //grade(true);
     currentQuestionIndex++;
     $("#success").fadeOut("normal", function () {
         nextQuestion();
     });
-});
+}});
 
 $("a.next-false").on("click", function () {
-    grade(false);
+  if(co == 0){
+    co++;
+    //grade(false);
     currentQuestionIndex++;
     $("#failure").fadeOut("normal", function () {
         nextQuestion();
     });
-});
+}});
 
 
 $("#nickname").keyup(function () {
